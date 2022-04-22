@@ -1,6 +1,8 @@
 from django.db import models
 from django.db.models import IntegerField, Model
 from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator 
+
 
 # Create your models here.
 
@@ -13,12 +15,12 @@ class Itineraire(models.Model):
     titre = models.CharField(max_length=200)
     point_depart = models.CharField('Point de départ',max_length=200)
     description = models.CharField(max_length=400)
-    altitude_depart = models.FloatField('Altitude de départ (m)')
-    altitude_minimale = models.FloatField('Altitude minimale (m)')
-    altitude_maximale = models.FloatField('Altitude maximale (m)')
-    denivele_positif_cumule = models.FloatField('Dénivelé positif cumulé (m)')
-    denivele_negatif_cumule = models.FloatField('Dénivelé négatif cumulé (m)')
-    duree = models.FloatField('Durée (en heure)')
+    altitude_depart = models.PositiveIntegerField('Altitude de départ (m)')
+    altitude_minimale = models.PositiveIntegerField('Altitude minimale (m)')
+    altitude_maximale = models.PositiveIntegerField('Altitude maximale (m)')
+    denivele_positif_cumule = models.PositiveIntegerField('Dénivelé positif cumulé (m)')
+    denivele_negatif_cumule = models.PositiveIntegerField('Dénivelé négatif cumulé (m)')
+    duree = models.PositiveIntegerField('Durée (en heure)',validators=[MinValueValidator(0)])
     CHOIX_DIF = ((1,'1'),(2,'2'),(3,'3'), (4,'4'), (5,'5')) # Liste d'entier avec choix pour difficulté
     difficulte = models.IntegerField('Difficulté (de 1 à 5)', default=1,choices=CHOIX_DIF)
 
