@@ -17,5 +17,7 @@ urlpatterns = [
     # ex: /itineraires/modif_sortie/2/
     path('modif_sortie/<int:sortie_id>/', views.modif_sortie, name='modif_sortie'),
     
-    path('sortie/<int:sortie_id>/post_commentaire/' , views.ajout_commentaire, name='ajout_commentaire')
+    path('sortie/<int:sortie_id>/post_commentaire/' , views.ajout_commentaire, name='ajout_commentaire'),
+    
+    path('sortie/<int:sortie_id>/photo/', views.photo_upload, name = 'photo_upload')
     ] 

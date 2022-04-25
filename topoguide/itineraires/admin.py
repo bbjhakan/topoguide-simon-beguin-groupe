@@ -1,6 +1,6 @@
 from unicodedata import name
 from django.contrib import admin
-from .models import Itineraire, Sortie,Commentaire
+from .models import Itineraire, Sortie,Commentaire, Photo
 
 
 # Register your models here.
@@ -40,4 +40,5 @@ class CommentaireAdmin(admin.ModelAdmin):
         (None,               {'fields': ['texte']}),
     ]
 admin.site.register(Commentaire, CommentaireAdmin)
+admin.site.register(Photo)
 

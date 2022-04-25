@@ -45,7 +45,7 @@ class Sortie(models.Model):
     meteo = models.CharField('Météo', max_length= 20,choices=CHOIX_METEO)
     CHOIX_DIF = ((1,'1'),(2,'2'),(3,'3'), (4,'4'), (5,'5'))
     difficulte_ressentie = models.IntegerField('Difficulté ressentie (de 1 à 5)', default=1,choices=CHOIX_DIF)
-
+    photos = models.ImageField(upload_to='photos')
     
     def __str__(self):
         return '%s %s'% (self.utilisateur, self.date_sortie)
@@ -57,6 +57,10 @@ class Commentaire(models.Model):
     utilisateur_auteur = models.ForeignKey(User, on_delete=models.CASCADE) #Référence à enregistrements d'autres tables avec le type ForeignKey
     texte = models.TextField()
 
-    
+class Photo(models.Model):
+    image = models.ImageField()
+    uploader = models.ForeignKey(User, on_delete=models.CASCADE)
+    sortie = models.ForeignKey(Sortie, on_delete = models.CASCADE)
+    date_created = models.DateTimeField(auto_now_add=True)
     
     

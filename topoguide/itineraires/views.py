@@ -1,7 +1,7 @@
 from django.shortcuts import get_list_or_404, get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
-from .forms import SortieForm, CommentForm
+from .forms import SortieForm, CommentForm, PhotoForm
 from .models import Itineraire, Sortie, Commentaire
 
 
@@ -101,7 +101,8 @@ def modif_sortie(request, sortie_id):
             sortie.itineraire =  get_object_or_404(Itineraire, pk = sortie.itineraire.id) #pré-rempli l'itinéraire
             sortie.save()
             return redirect('itineraires:sortie_details', sortie_id)
-    return render(request, 'itineraires/modif_sortie.html', {'form': form, 'itineraire' : sortie.itineraire})
+    return render(request, 'itineraires/modif_sortie.html', {'form': form, 'itineraire' : sortie.itineraire, 'sortie' : sortie})
+
 
 def ajout_commentaire(request, sortie_id):
     
@@ -123,7 +124,25 @@ def ajout_commentaire(request, sortie_id):
 
     return render(request, 'itineraires/commentaire.html', {'form': form})
 
+def photo_upload(request, sortie_id):
+    
+     sortie = get_object_or_404(Sortie, pk=sortie_id)
+     form = PhotoForm()
+     if request.method == 'POST':
+         form = PhotoForm(request.POST, request.FILES)
+         if form.is_valid():
+             photo = form.save(commit = False)
+             photo.uploader = request.user
+             photo.sortie = sortie
+             photo.save()
+             return redirect('itineraires:sortie_details', sortie_id)
+     else:
+       form = PhotoForm()
+        
+     return render(request, 'itineraires/photo_upload.html', {'form' : form})
 
-
+# def affichage_photo(request):
+#     photos = models.Photo.objects.all()
+#     return render(request, 'itineraires/sorties_details.html', context={'photos': photos})
 
 
