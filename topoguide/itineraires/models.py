@@ -6,12 +6,16 @@ from django.contrib.auth.models import User
 
 class Itineraire(models.Model):
     """
-    Un itinéraire constitué du titre, du point de départ, de la description, de l'altitude de départ, 
+    Un itinéraire constitué du titre, du point de départ, de la latitude et longitude des points de départ et d'arrivée, de la description, de l'altitude de départ, 
     de l'altitude min, de l'altitude max, du dénivelé positif cumulé
     du dénivelé négatif cumulé dela durée estimée (en heures) de la difficulté estimée (de 1 à 5)
     """
     titre = models.CharField(max_length=200)
     point_depart = models.CharField('Point de départ',max_length=200)
+    latitude_depart = models.FloatField('Latitude point de départ')
+    longitude_depart = models.FloatField('Longitude point de départ')
+    latitude_arrivee = models.FloatField('Latitude point arrivée')
+    longitude_arrivee = models.FloatField('Longitude point arrivée')
     description = models.CharField(max_length=400)
     altitude_depart = models.FloatField('Altitude de départ (m)')
     altitude_minimale = models.FloatField('Altitude minimale (m)')

@@ -8,6 +8,10 @@ class ItineraireAdmin(admin.ModelAdmin):
     fieldsets = [
         (None,               {'fields': ['titre']}),
         (None,               {'fields': ['point_depart']}),
+        (None,               {'fields': ['latitude_depart']}),
+        (None,               {'fields': ['longitude_depart']}),
+        (None,               {'fields': ['latitude_arrivee']}),
+        (None,               {'fields': ['longitude_arrivee']}),
         (None,               {'fields': ['description']}),
         (None,               {'fields': ['altitude_depart']}),
         (None,               {'fields': ['altitude_minimale']}),
