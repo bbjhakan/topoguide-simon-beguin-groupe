@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import IntegerField, Model
 from django.contrib.auth.models import User
+import datetime
 
 # Create your models here.
 
@@ -52,8 +53,10 @@ class Sortie(models.Model):
 class Commentaire(models.Model):
     
     sortie = models.ForeignKey(Sortie, on_delete=models.CASCADE) 
-    date = models.DateTimeField('Date commentaire')
+    date = models.DateTimeField(default = datetime.datetime.now() )
     utilisateur_auteur = models.ForeignKey(User, on_delete=models.CASCADE) #Référence à enregistrements d'autres tables avec le type ForeignKey
     texte = models.TextField()
+
+    
     
     

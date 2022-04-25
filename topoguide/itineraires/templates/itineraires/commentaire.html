@@ -1,22 +1,21 @@
-
+{% extends 'base.html' %}
 {% load bootstrap5 %} 
 
+{% block title %}Ecrivez votre commentaire{% endblock title%}
 
+{% block content %}
 
-<body> 
-    <head>
-        <title>Ecrivez votre commentaire sur la sortie de {{sortie.utilisateur}} à {{sortie.itineraire}} </title>
-      </head>
-       
-  <form method="POST">
-    {% csrf_token %}
-    {{comment_form.as_p}}
-  </form>
-</body>
+        <form method="POST" action = "" class="post-form">
+        {% csrf_token %}
 
-<form method="POST" action = "" class="post-form">{% csrf_token %}
-    <div class="mb-3">
-    {{ form.as_p }}
-</div>
-    <button type="submit" class="button">Enregistrer</button>
-</form>
+        {{form}}
+        <input type = "submit"></button>
+    </form>
+    
+    {# En cas d'annulation, on revient à la page principale #}
+    <tbody>
+        <input type="button" onclick= window.location.href="/itineraires/" value="Annuler" style="float: left">
+    </tbody>
+    
+    
+{% endblock content %}

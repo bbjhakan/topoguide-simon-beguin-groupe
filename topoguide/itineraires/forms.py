@@ -1,7 +1,7 @@
 from django import forms
 
 from .models import Sortie, Commentaire
-
+import datetime
 class SortieForm(forms.ModelForm):
     """
     Simple formulaire, choix des items à afficher
@@ -18,6 +18,10 @@ class CommentForm(forms.ModelForm):
         'rows':5,
         'cols':50
     }))
+    
     class Meta:
         model = Commentaire
-        fields = ['texte'] 
+        
+        #Commentaire.date = datetime.date.today
+    
+        fields = ['texte' ]

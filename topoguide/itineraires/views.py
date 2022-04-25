@@ -108,19 +108,20 @@ def ajout_commentaire(request, sortie_id):
     sortie = get_object_or_404(Sortie, pk=sortie_id)
     
     if request.method == 'POST':
+
         form = CommentForm(request.POST)
         if form.is_valid():
-            texte = request.POST.get('texte')
-            comment = Comment.objects.create(post = post, user = request.user, content = content)
-            comment.save()
-            return redirect(post.get_absolute_url())
+
+            commentaire = form.save(commit=False)
+            commentaire.utilisateur_auteur = request.user
+            commentaire.sortie = sortie
+            commentaire.save()
+            
+            return redirect('itineraires:sortie_details', sortie_id)
     else:
       form = CommentForm()
 
-    contexte ={
-      'comment_form':form,
-      }
-    return render(request, 'itineraires/commentaire.html', contexte)
+    return render(request, 'itineraires/commentaire.html', {'form': form})
 
 
 
