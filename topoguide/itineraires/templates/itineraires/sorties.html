@@ -37,10 +37,10 @@
                 <!-- Ajout de la carte avec point de départ et d'arrivée-->
                 <div class="col">
                     <script type="text/javascript">
-                        var map = L.map('mapid').setView([45.832622, 6.865175], 5);
+                        var map = L.map('mapid').setView([({{itineraire.latitude_arrivee}}+{{itineraire.latitude_depart}})/2, ({{itineraire.longitude_depart}}+{{itineraire.longitude_arrivee}})/2], 20);
                         // Déclaration du vecteur
-                        var point_depart = L.marker([45.832622, 6.865175]).addTo(map);
-                        var point_arrivee = L.marker([45.832622, 7.865175]).addTo(map);
+                        var point_depart = L.marker([{{itineraire.latitude_depart}}, {{itineraire.longitude_depart}}]).addTo(map);
+                        var point_arrivee = L.marker([{{itineraire.latitude_arrivee}}, {{itineraire.longitude_arrivee}}]).addTo(map);
                         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                         attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                         }).addTo(map);
