@@ -2,7 +2,7 @@ from django.shortcuts import get_list_or_404, get_object_or_404, render, redirec
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from .forms import SortieForm, CommentForm, PhotoForm
-from .models import Itineraire, Sortie, Commentaire
+from .models import Itineraire, Sortie, Commentaire, Photo
 
 
 # Create your views here.
@@ -46,8 +46,9 @@ def sortie(request, sortie_id):
     """
     sortie = get_object_or_404(Sortie, pk=sortie_id)    
     liste_commentaires = get_list_or_404(Commentaire, sortie = sortie_id)
+    photos = get_list_or_404(Photo, sortie = sortie_id)
     
-    return render(request, 'itineraires/sorties_details.html', {'sortie': sortie, 'liste_commentaires' : liste_commentaires})
+    return render(request, 'itineraires/sorties_details.html', {'sortie': sortie, 'liste_commentaires' : liste_commentaires, 'photos' : photos})
 
 
 @login_required
