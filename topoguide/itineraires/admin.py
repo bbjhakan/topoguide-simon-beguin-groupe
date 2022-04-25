@@ -1,6 +1,6 @@
 from unicodedata import name
 from django.contrib import admin
-from .models import Itineraire, Sortie
+from .models import Itineraire, Sortie,Commentaire
 
 
 # Register your models here.
@@ -31,4 +31,13 @@ class SortieAdmin(admin.ModelAdmin):
         (None,               {'fields': ['difficulte_ressentie']}),
     ]
 admin.site.register(Sortie, SortieAdmin)
+
+class CommentaireAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None,               {'fields': ['utilisateur_auteur']}),
+        (None,               {'fields': ['date']}),
+        (None,               {'fields': ['sortie']}),
+        (None,               {'fields': ['texte']}),
+    ]
+admin.site.register(Commentaire, CommentaireAdmin)
 

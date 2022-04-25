@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Sortie
+from .models import Sortie, Commentaire
 
 class SortieForm(forms.ModelForm):
     """
@@ -9,3 +9,15 @@ class SortieForm(forms.ModelForm):
     class Meta:
         model = Sortie
         fields = ['date_sortie', 'duree_reelle', 'nombre_personne', 'experience', 'meteo', 'difficulte_ressentie']
+        
+class CommentForm(forms.ModelForm):
+    texte = forms.CharField(label ="", widget = forms.Textarea(
+    attrs ={
+        'class':'form-control',
+        'placeholder':'Commentez ici !',
+        'rows':5,
+        'cols':50
+    }))
+    class Meta:
+        model = Commentaire
+        fields = ['texte'] 

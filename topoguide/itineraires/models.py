@@ -49,4 +49,11 @@ class Sortie(models.Model):
     def __str__(self):
         return '%s %s'% (self.utilisateur, self.date_sortie)
     
+class Commentaire(models.Model):
+    
+    sortie = models.ForeignKey(Sortie, on_delete=models.CASCADE) 
+    date = models.DateTimeField('Date commentaire')
+    utilisateur_auteur = models.ForeignKey(User, on_delete=models.CASCADE) #Référence à enregistrements d'autres tables avec le type ForeignKey
+    texte = models.TextField()
+    
     

@@ -16,4 +16,6 @@ urlpatterns = [
     path('nouvelle_sortie/<int:itineraire_id>/', views.nouvelle_sortie, name='nouvelle_sortie'),
     # ex: /itineraires/modif_sortie/2/
     path('modif_sortie/<int:sortie_id>/', views.modif_sortie, name='modif_sortie'),
+    
+    path('sortie/<int:sortie_id>/post_commentaire/' , views.ajout_commentaire, name='ajout_commentaire')
     ] 

@@ -1,8 +1,8 @@
 from django.shortcuts import get_list_or_404, get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
-from .forms import SortieForm
-from .models import Itineraire, Sortie
+from .forms import SortieForm, CommentForm
+from .models import Itineraire, Sortie, Commentaire
 
 
 # Create your views here.
@@ -44,8 +44,10 @@ def sortie(request, sortie_id):
         request : la demande entrante
         itineraire_id : l'identifiant de la sortie
     """
-    sortie = get_object_or_404(Sortie, pk=sortie_id)
-    return render(request, 'itineraires/sorties_details.html', {'sortie': sortie})
+    sortie = get_object_or_404(Sortie, pk=sortie_id)    
+    liste_commentaires = get_list_or_404(Commentaire, sortie = sortie_id)
+    
+    return render(request, 'itineraires/sorties_details.html', {'sortie': sortie, 'liste_commentaires' : liste_commentaires})
 
 
 @login_required
@@ -100,6 +102,27 @@ def modif_sortie(request, sortie_id):
             sortie.save()
             return redirect('itineraires:sortie_details', sortie_id)
     return render(request, 'itineraires/modif_sortie.html', {'form': form, 'itineraire' : sortie.itineraire})
+
+def ajout_commentaire(request, sortie_id):
+    
+    sortie = get_object_or_404(Sortie, pk=sortie_id)
+    
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            texte = request.POST.get('texte')
+            comment = Comment.objects.create(post = post, user = request.user, content = content)
+            comment.save()
+            return redirect(post.get_absolute_url())
+    else:
+      form = CommentForm()
+
+    contexte ={
+      'comment_form':form,
+      }
+    return render(request, 'itineraires/commentaire.html', contexte)
+
+
 
 
 

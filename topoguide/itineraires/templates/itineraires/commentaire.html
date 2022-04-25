@@ -1,0 +1,22 @@
+
+{% load bootstrap5 %} 
+
+
+
+<body> 
+    <head>
+        <title>Ecrivez votre commentaire sur la sortie de {{sortie.utilisateur}} à {{sortie.itineraire}} </title>
+      </head>
+       
+  <form method="POST">
+    {% csrf_token %}
+    {{comment_form.as_p}}
+  </form>
+</body>
+
+<form method="POST" action = "" class="post-form">{% csrf_token %}
+    <div class="mb-3">
+    {{ form.as_p }}
+</div>
+    <button type="submit" class="button">Enregistrer</button>
+</form>

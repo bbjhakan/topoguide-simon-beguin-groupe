@@ -46,7 +46,25 @@
                         Difficulté ressentie : {{ sortie.difficulte_ressentie }}
                         </td>
             </tr>
+            
+
+            <td> TESTTTT </td>
+            {% for commentaire in liste_commentaires %}
+            <tr>
+                
+            <td>Par : {{commentaire.utilisateur_auteur}}</td>   
+            <td>Publié le {{commentaire.date}} 
+            <br>
+            {{commentaire.texte}}</td>
+            
+            </tr>
+            {% endfor %}
+
+
+
         </tbody>
+
+        
         <article class="sortie">
             <aside class="actions">
                 <!-- Ajout d'un icône pour éditer une sortie -->
@@ -55,6 +73,11 @@
                 </a>
             </aside>
         </article>
+
+        <div class="row pb-3">
+            <td><button type="button" class="btn btn-secondary" style="float:center" onclick= window.location.href="{% url 'itineraires:ajout_commentaire' sortie.id %}">Ajouter un commentaire</button></td>
+        </div>
+
     </table>
 </div>
 
