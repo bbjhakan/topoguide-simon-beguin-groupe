@@ -1,35 +1,56 @@
 {% extends 'base.html' %}
 {% load bootstrap5 %} 
 
+<style>
+    #map{
+        width:100%;
+        height:600px;
+    }
+</style>
 
 {% block title %}Liste Sorties{% endblock title%}
 
 {% block content %}
 
 <!-- Affichage des informations sur l'itinéraire en début de page -->
-    <div class="row pb-3">
+    <div class="row">
+        <div class="col">
         <h1>{{itineraire.titre}}</h1>
         {{itineraire.description}} depuis {{itineraire.point_depart}}
         <br><br>
-        <div class="container">
-        <tr>
-            <td><b>Altitude de départ</b> : {{itineraire.altitude_depart}} mètres</td>
-            <br>
-            <td><b>Altitude minimale</b> : {{itineraire.altitude_minimale}} mètres</td>
-            <br>
-            <td><b>Altitude maximale</b> : {{itineraire.altitude_maximale}} mètres</td>
-            <br>
-            <td><b>Dénivelé positif cumulé</b> : {{itineraire.denivele_positif_cumule}} mètres </td>
-            <br>
-            <td><b>Dénivelé négatif cumulé</b> : {{itineraire.denivele_negatif_cumule}} mètres </td>
-            <br>
-            <td><b>Durée estimée</b> : {{itineraire.duree}} heures</td>
-            <br>
-            <td><b>Difficulté</b> : {{itineraire.difficulte}} /5</td>
-        </tr>
+        <div class="container" id="mapid" style="width: 600px; height: 400px; float: right"></div>
+            <tr>
+                <td><b>Altitude de départ</b> : {{itineraire.altitude_depart}} mètres</td>
+                <br>
+                <td><b>Altitude minimale</b> : {{itineraire.altitude_minimale}} mètres</td>
+                <br>
+                <td><b>Altitude maximale</b> : {{itineraire.altitude_maximale}} mètres</td>
+                <br>
+                <td><b>Dénivelé positif cumulé</b> : {{itineraire.denivele_positif_cumule}} mètres </td>
+                <br>
+                <td><b>Dénivelé négatif cumulé</b> : {{itineraire.denivele_negatif_cumule}} mètres </td>
+                <br>
+                <td><b>Durée estimée</b> : {{itineraire.duree}} heures</td>
+                <br>
+                <td><b>Difficulté</b> : {{itineraire.difficulte}} /5</td>
+                
+                <!-- Ajout de la carte avec point de départ et d'arrivée-->
+                <div class="col">
+                    <script type="text/javascript">
+                        var map = L.map('mapid').setView([45.832622, 6.865175], 5);
+                        // Déclaration du vecteur
+                        var point_depart = L.marker([45.832622, 6.865175]).addTo(map);
+                        var point_arrivee = L.marker([45.832622, 7.865175]).addTo(map);
+                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        }).addTo(map);
+                    </script>
+             
+                </div>
+            </tr>
         </div>
-
     </div>
+
 
 <!-- Affichage des différentes sorties -->
     <div class="row">
