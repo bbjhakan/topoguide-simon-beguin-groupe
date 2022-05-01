@@ -51,16 +51,25 @@ class Sortie(models.Model):
         return '%s %s'% (self.utilisateur, self.date_sortie)
     
 class Commentaire(models.Model):
-    
+    """
+    Un commentaire est associé à une seule sortie et à un seul utilisateur. 
+    On lui attribue automatiquement la date et l'heure à laquelle celui-ci est écrit.
+    L'attribut texte enregistre le contenu du commentaire.
+    """
     sortie = models.ForeignKey(Sortie, on_delete=models.CASCADE) 
     date = models.DateTimeField(default = datetime.datetime.now() )
-    utilisateur_auteur = models.ForeignKey(User, on_delete=models.CASCADE) #Référence à enregistrements d'autres tables avec le type ForeignKey
+    utilisateur_auteur = models.ForeignKey(User, on_delete=models.CASCADE) 
     texte = models.TextField()
 
 class Photo(models.Model):
+    """
+    Une photo est associée à une seule sortie et à un seul uploader.
+    L'attribut image enregistre la photo.
+    On lui attache aussi automatiquement la date à laquelle celle-ci est postée.
+    """
     image = models.ImageField()
     uploader = models.ForeignKey(User, on_delete=models.CASCADE)
     sortie = models.ForeignKey(Sortie, on_delete = models.CASCADE)
-    date_created = models.DateTimeField(auto_now_add=True)
+    date_created = models.DateTimeField(default = datetime.datetime.now())
     
     

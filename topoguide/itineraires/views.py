@@ -104,8 +104,16 @@ def modif_sortie(request, sortie_id):
             return redirect('itineraires:sortie_details', sortie_id)
     return render(request, 'itineraires/modif_sortie.html', {'form': form, 'itineraire' : sortie.itineraire, 'sortie' : sortie})
 
-
+@login_required
 def ajout_commentaire(request, sortie_id):
+    """
+    Ajoute un commentaire sous une sortie.
+    Args:
+        request : la demande entrante, GET or POST
+        sortie_id : l'identifiant de la sortie à modifier
+    Returns:
+        - Une page avec une boîte commentaire à remplir pour l'envoyer dans l'espace commentaire de la sortie associée.
+    """
     
     sortie = get_object_or_404(Sortie, pk=sortie_id)
     
@@ -125,25 +133,29 @@ def ajout_commentaire(request, sortie_id):
 
     return render(request, 'itineraires/commentaire.html', {'form': form})
 
+@login_required
 def photo_upload(request, sortie_id):
+    """
+    Args:
+        request : la demande entrante, GET or POST
+        sortie_id : l'identifiant de la sortie à modifier
+    Returns:
+        - Une page avec un bouton de téléchargement d'une photo. Celle-ci apparaîtra alors sur la page de la sortie associée.
+    """
     
-     sortie = get_object_or_404(Sortie, pk=sortie_id)
-     form = PhotoForm()
-     if request.method == 'POST':
-         form = PhotoForm(request.POST, request.FILES)
-         if form.is_valid():
-             photo = form.save(commit = False)
-             photo.uploader = request.user
-             photo.sortie = sortie
-             photo.save()
-             return redirect('itineraires:sortie_details', sortie_id)
-     else:
+    sortie = get_object_or_404(Sortie, pk=sortie_id)
+    form = PhotoForm()
+    if request.method == 'POST':
+        form = PhotoForm(request.POST, request.FILES)
+        if form.is_valid():
+            photo = form.save(commit = False)
+            photo.uploader = request.user
+            photo.sortie = sortie
+            photo.save()
+            return redirect('itineraires:sortie_details', sortie_id)
+    else:
        form = PhotoForm()
         
-     return render(request, 'itineraires/photo_upload.html', {'form' : form})
-
-# def affichage_photo(request):
-#     photos = models.Photo.objects.all()
-#     return render(request, 'itineraires/sorties_details.html', context={'photos': photos})
+    return render(request, 'itineraires/photo_upload.html', {'form' : form})
 
 

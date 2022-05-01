@@ -15,6 +15,8 @@ class SortieForm(forms.ModelForm):
         
 
 class CommentForm(forms.ModelForm):
+    # Met en forme la case dans laquelle on écrit un commentaire
+    
     texte = forms.CharField(label ="", widget = forms.Textarea(
     attrs ={
         'class':'form-control',
@@ -25,11 +27,10 @@ class CommentForm(forms.ModelForm):
     
     class Meta:
         model = Commentaire
-        
-        #Commentaire.date = datetime.date.today
     
         fields = ['texte' ]
         
+    
 class PhotoForm(forms.ModelForm):
     edit_photo = forms.BooleanField(widget=forms.HiddenInput, initial=True)
     class Meta : 

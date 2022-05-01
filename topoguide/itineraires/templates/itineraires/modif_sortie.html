@@ -33,6 +33,7 @@
         
     </div>
 
+    <!-- Bouton d'enregistrement d'une photo -->
         <input type="button" onclick= window.location.href="/itineraires/sortie/{{ sortie.id }}/photo"  value="Telecharger des photos" style="float: left">
 
         <br>
@@ -40,6 +41,7 @@
         <button type="submit" class="button">Enregistrer</button>
     </form>
 
+    {# Bouton de retour en cas d'annulation #}
     <input type="button" onclick= window.location.href="/itineraires/" value="Annuler" style="float: left">
 {% endblock %}
 
