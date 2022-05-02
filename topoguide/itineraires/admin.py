@@ -38,6 +38,7 @@ class CommentaireAdmin(admin.ModelAdmin):
         (None,               {'fields': ['date']}),
         (None,               {'fields': ['sortie']}),
         (None,               {'fields': ['texte']}),
+        (None,               {'fields': ['statut']})
     ]
 admin.site.register(Commentaire, CommentaireAdmin)
 admin.site.register(Photo)

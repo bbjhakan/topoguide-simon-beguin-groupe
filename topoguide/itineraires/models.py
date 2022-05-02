@@ -55,11 +55,13 @@ class Commentaire(models.Model):
     Un commentaire est associé à une seule sortie et à un seul utilisateur. 
     On lui attribue automatiquement la date et l'heure à laquelle celui-ci est écrit.
     L'attribut texte enregistre le contenu du commentaire.
+    L'attribut statut, qui rend visible le commentaire si sa valeur est True, et le cache sinon.
     """
     sortie = models.ForeignKey(Sortie, on_delete=models.CASCADE) 
     date = models.DateTimeField(default = datetime.datetime.now() )
     utilisateur_auteur = models.ForeignKey(User, on_delete=models.CASCADE) 
     texte = models.TextField()
+    statut = models.BooleanField( default = True )
 
 class Photo(models.Model):
     """
