@@ -9,6 +9,8 @@
     {# Load CSS and JavaScript #}
     {% bootstrap_css %}
     {% bootstrap_javascript %}
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     {# Display django.contrib.messages as Bootstrap alerts #}
     {% bootstrap_messages %}
@@ -95,7 +97,21 @@
         <li><b class="active" href="#home">TOPOGUIDE</b></li>
         <li><a href="/itineraires/">Itineraires</a></li>
         <li style="float:right"><a href="/accounts/logout/">Logout</a></li>
-            
+        <li class = "mx-auto">
+          <form method="GET" action="{% url 'itineraires:recherche' %}">
+          <div class="form-row">
+              <div class="form-group col-12">
+                  <div class="input-group">
+                      <input class="form-control py-2 border-right-0 border" type="search" name="barre_recherche" placeholder="Recherche.." />
+                      <span class="input-group-append">
+                          <div class="input-group-text bg-transparent">
+                              <i class="fa fa-search"></i>
+                          </div>
+                      </span>
+                  </div>
+              </div>        
+          </div>
+        </form> </li>
     </ul>
       <div class="container">
         {% block content %}{% endblock %}

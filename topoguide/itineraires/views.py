@@ -102,4 +102,13 @@ def modif_sortie(request, sortie_id):
     return render(request, 'itineraires/modif_sortie.html', {'form': form, 'itineraire' : sortie.itineraire})
 
 
+def SearchView(request):
+    qi = Itineraire.objects.all()
+    qs = Sortie.objects.all()
+    query = request.GET.get('barre_recherche')
+    
+    if query != '' and query is not None:
+        qi = qi.filter(titre__icontains = query)
+    return render(request, "itineraires/search_form.html", {'recherche': query, 'qi': qs, 'qi': qi})
+
 
