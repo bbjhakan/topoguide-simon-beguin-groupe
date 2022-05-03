@@ -29,10 +29,29 @@ def sorties(request, itineraire_id):
         itineraire_id : l'identifiant de l'itineraire 
 
     """
-    sorties  = get_list_or_404(Sortie, itineraire_id = itineraire_id)
+    sortie_query = Sortie.objects.all()
+
+    date_min = request.GET.get('date_min')
+    date_max = request.GET.get('date_max')
+    difficulte = request.GET.get('difficulte')
+    duree_min = request.GET.get('duree_min')
+    duree_max = request.GET.get('duree_max')
     itineraire = get_object_or_404(Itineraire, pk = itineraire_id)
     utilisateur = request.user
-    return render(request, 'itineraires/sorties.html', {'sorties': sorties, 'itineraire': itineraire, 'utilisateur':utilisateur})
+    
+    if is_valid_query(date_min):
+        sortie_query = sortie_query.filter(date_sortie__gte=date_min)                                       
+    if is_valid_query(date_max):
+        sortie_query = sortie_query.filter(date_sortie__lt=date_max)                                       
+    
+    if is_valid_query(difficulte):
+        sortie_query = sortie_query.filter(difficulte_ressentie = difficulte)
+    
+    if is_valid_query(duree_min):
+        sortie_query = sortie_query.filter(duree_reelle__gte=duree_min)                                       
+    if is_valid_query(duree_max):
+        sortie_query = sortie_query.filter(duree_reelle__lte=duree_max) 
+    return render(request, 'itineraires/sorties.html', {'itineraire': itineraire, 'utilisateur':utilisateur, 'qs': sortie_query, 'date_min': date_min, 'date_max': date_max, 'difficulte': difficulte,'duree_min': duree_min, 'duree_max': duree_max})
 
 
 @login_required
@@ -110,25 +129,19 @@ def SearchView(request):
     sortie_query = Sortie.objects.all()
     
     query = request.GET.get('barre_recherche')
-    date_min = request.GET.get('date_min')
-    date_max = request.GET.get('date_max')
+
     difficulte = request.GET.get('difficulte')
     duree_min = request.GET.get('duree_min')
     duree_max = request.GET.get('duree_max')
     
-    queryset = Sortie.objects.annotate()
     
     if is_valid_query(query):
         itineraire_query = itineraire_query.filter(Q(titre__icontains = query)  | ##on cherche dans le titre de l'itinéraire
                                                    Q(description__icontains = query) | ## ou dans la description de l'itinéraire
                                                    Q(point_depart__icontains = query)) ## ou dans le nom du point de départ
-        sortie_query = sortie_query.filter(Q(utilisateur__username__icontains = query) |
-                                           Q(itineraire__titre__icontains = query))
-    
-    if is_valid_query(date_min):
-        sortie_query = sortie_query.filter(date_sortie__gte=date_min)                                       
-    if is_valid_query(date_max):
-        sortie_query = sortie_query.filter(date_sortie__lt=date_max)                                       
+        sortie_query = sortie_query.filter(Q(utilisateur__username__icontains = query) | ##on cherche dans le nom d'utilisateur
+                                           Q(itineraire__titre__icontains = query)) ##ou dans le titre de l'itinéraire auquel la sortie est associée
+                                      
     
     if is_valid_query(difficulte):
         itineraire_query = itineraire_query.filter(difficulte = difficulte)
@@ -141,6 +154,6 @@ def SearchView(request):
         itineraire_query = itineraire_query.filter(duree__lte = duree_max)
         sortie_query = sortie_query.filter(duree_reelle__lte=duree_max)  
     
-    return render(request, "itineraires/search_form.html", {'recherche': query, 'qs': sortie_query, 'qi': itineraire_query, 'date_min': date_min, 'date_max': date_max, 'difficulte': difficulte,'duree_min': duree_min, 'duree_max': duree_max})
+    return render(request, "itineraires/search_form.html", {'recherche': query, 'qs': sortie_query, 'qi': itineraire_query, 'difficulte': difficulte,'duree_min': duree_min, 'duree_max': duree_max})
 
 

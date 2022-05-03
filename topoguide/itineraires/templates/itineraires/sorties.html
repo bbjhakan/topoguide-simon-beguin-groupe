@@ -25,45 +25,123 @@
             <br>
             <td><b>Durée estimée</b> : {{itineraire.duree}} heures</td>
             <br>
-            <td><b>Difficulté</b> : {{itineraire.difficulte}} /5</td>
+            <td><b>Difficulté</b> : {{itineraire.difficulte}}/5</td>
         </tr>
         </div>
 
     </div>
 
 <!-- Affichage des différentes sorties -->
-    <div class="row">
-    {% if sorties %}
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>Par</th>
-                <th></th>
-                <th>Date</th>
-            </tr>
-            </thead>
-            <tbody>
-
-            <div class="row pb-3">
-                <h1>Sorties</h1>
+<div class="row pb-3">
+    <h1>Sorties </h1>
+</div>
+<div class="pos-f-t">
+    <div class="collapse" id="navbarToggleExternalContent">
+      <form method="GET" action="{%url 'itineraires:sorties' itineraire.id%}">        
+      
+        <div class="form-row">
+          <div class="form-group col-md-2 col-lg-2">
+            <!-- Filtre pour afficher seulement les sorties après la date indiquée-->
+            <label for="dateMin">Date de sortie après le</label>
+            <input type="date" class="form-control" id="dateMin" name="date_min" value="{{date_min}}">
+          </div>
+          
+            <div class="form-group col-md-2 col-lg-2">
+              <!-- Filtre pour afficher seulement les sorties avant la date indiquée-->
+              <label for="dateMax">Date de sortie avant le</label>
+              <input type="date" class="form-control" id="dateMax" name="date_max" value="{{date_max}}" >
             </div>
-            {% for sortie in sorties %}
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-2 col-lg-2">
+              <!-- Filtre pour afficher seulement les itinéraires/sorties avec la difficulté indiquée-->
+              <label for="difficulte">Difficulté souhaitée (estimée ou ressentie)</label>
+              <input type="number" class="form-control" id="difficulte" name="difficulte" value="{{difficulte}}" min="1" max="5">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-2 col-lg-2">
+              <!-- Filtre pour afficher seulement les itinéraires/sorties avec une durée supérieure à la durée indiquée-->
+              <label for="dureeMin">Durée minimale</label>
+              <input type="number" class="form-control" id="dureeMin" name="duree_min" value="{{duree_min}}" min = "0">
+            </div>
+            
+              <div class="form-group col-md-2 col-lg-2">
+                <!-- Filtre pour afficher seulement les sorties avant la date indiquée-->
+                <label for="dureeMax">Durée maximale</label>
+                <input type="number" class="form-control" id="dureeMax" name="duree_max" value="{{duree_max}}" >
+              </div>
+          </div>
+        <button type="submit" class="btn btn-primary">FILTRER</button>
+      </form>
+
+    </div>
+    <nav class="navbar navbar-dark bg-dark">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span>FILTRES</span>
+      </button>
+    </nav>
+  </div>
+  <br/>
+  <div> Liste de filtre(s) appliqué(s): <br/>
+    {% if date_min or date_max or duree_max or duree_min or difficulte%}
+      {% if date_min %}
+        Date de sortie après le : {{date_min}}<br/>
+      {%endif%}
+      {% if date_max %}
+        Date de sortie avant le : {{date_max}}<br/>
+      {%endif%}
+      {% if duree_min %}
+        Durée minimale : {{duree_min}} h<br/>
+      {%endif%}
+      {% if duree_max %}
+        Durée maximale : {{duree_max}} h<br/>
+      {%endif%}
+      {% if difficulte %}
+        Difficulté : {{difficulte}}<br/>
+      {%endif%}
+    {% else %} Aucun filtre activé {%endif%}
+    
+    <div class="row pb-3">
+        {% if qs %}
+        
+            <table class="table table-striped" style ="text-align:center">
+                <thead>
                 <tr>
-                    <td>{{sortie.utilisateur}}</td>
+                    <th>Par</th>
                     <th></th>
-                    <td>{{ sortie.date_sortie }}</td>
-                    <td><button type="button" class="btn btn-secondary" style="float:center" onclick= window.location.href="{% url 'itineraires:sortie_details' sortie.id %}">Consulter</button></td>
-                    <!-- N'affiche le bouton modifier que si l'utilisateur est l'auteur de la sortie -->
-                    {%if utilisateur == sortie.utilisateur%} 
-                    <td><button type="button" class="btn btn-secondary" style="float:center" onclick= window.location.href="{% url 'itineraires:modif_sortie' sortie.id %}">Modifier</button></td>
+                    <th>Date</th>
+                    <th></th>
+                    <th>Difficulté ressentie</th>
+                    <th></th>
+                    <th>Durée</th>
                 </tr>
-                {% endif %}
-            {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <div class="jumbotron"><i>Pas de sorties disponibles.</i></div>
-    {% endif %}
+                </thead>
+                <tbody>
+
+                
+                {% for sortie in qs %}
+                    <tr>
+                        <td>{{sortie.utilisateur}}</td>
+                        <th></th>
+                        <td>{{ sortie.date_sortie }}</td>
+                        <th></th>
+                        <td> {{sortie.difficulte_ressentie}}/5 </td>
+                        <th></th>
+                        <td> {{sortie.duree_reelle}} h</td>
+                        <td><button type="button" class="btn btn-secondary" style="float:center" onclick= window.location.href="{% url 'itineraires:sortie_details' sortie.id %}">Consulter</button></td>
+                        <!-- N'affiche le bouton modifier que si l'utilisateur est l'auteur de la sortie -->
+                        {%if utilisateur == sortie.utilisateur%} 
+                        <td><button type="button" class="btn btn-secondary" style="float:center" onclick= window.location.href="{% url 'itineraires:modif_sortie' sortie.id %}">Modifier</button></td>
+                    </tr>
+                        {%else %} <td> </td>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="jumbotron"><i>Pas de sorties disponibles.</i></div>
+        {% endif %}
     </div>
 
 <!-- Ajout de 2 boutons pour créer une sortie ou revenir à la page des itinéraires-->
@@ -74,5 +152,8 @@
 <div class="row pt-3">
     <a class="btn btn-secondary" href="{% url 'itineraires:nouvelle_sortie' itineraire.id%}">Créer une nouvelle sortie</a>
 </div>
-
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+ 
 {% endblock content %}
