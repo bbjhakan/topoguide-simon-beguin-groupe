@@ -17,30 +17,101 @@
 
       <h3>Résultats de la recherche pour: {{recherche}}</h3>
 
+
+
+
+      <form method="GET" action="{%url 'itineraires:recherche' %}">        
+        
+        <div class = "form-row">
+          <div class="form-group col-md-2 col-lg-2">
+            <label for="recherche"> Votre recherche: </label>
+            <input type="text" name = "barre_recherche" value = {{recherche}} >
+          </div>
+        </div>
+
+        FILTRES:
+        <div class="form-row">
+          <div class="form-group col-md-2 col-lg-2">
+            
+            <label for="dateMin">Date de sortie après le</label>
+            <input type="date" class="form-control" id="dateMin" name="date_min">
+          </div>
+          <br/>
+          <div class="form-group col-md-2 col-lg-2">
+            <label for="dateMax">Date de sortie avant le</label>
+            <input type="date" class="form-control" id="dateMax" name="date_max" >
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+      </form>
+      
       <hr />
+            {% if qi or qs  %}
 
-      <div>
-          <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>Nom</th>
-                <th>Durée estimée</th>
-                <th>Difficulté estimée</th>
-            </tr>
-            </thead>
-            <tbody>
-            <!-- Affichage de tous les itinéraires-->
-            {% for itineraire in qi %}
-                    <tr>
-                    <td><a href="{% url 'itineraires:sorties' itineraire.id %}">{{ itineraire.titre }}</a></td>
-                    <td>{{ itineraire.duree }} h </td>
-                    <td>{{ itineraire.difficulte }}/5</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-      </div>
-
+              {% if qi %}
+                <div>
+                    <table class="table table-striped">
+                      <thead>
+                      <tr>
+                          <th>Nom</th>
+                          <th>Description</th>
+                          <th>Durée estimée</th>
+                          <th>Difficulté estimée</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <!-- Affichage de tous les itinéraires-->
+                      {% for itineraire in qi %}
+                              <tr>
+                              <td><a href="{% url 'itineraires:sorties' itineraire.id %}">{{ itineraire.titre }}</a></td>
+                              <td>{{ itineraire.description }} </td>
+                              <td>{{ itineraire.duree }} h </td>
+                              <td>{{ itineraire.difficulte }}/5</td>
+                          </tr>
+                      {% endfor %}
+                      </tbody>
+                  </table>
+                </div>
+                {% endif%}
+              {% if qs %}
+                <table class="table table-striped">
+                  <thead>
+                  <tr>
+                      <th>Par</th>
+                      <th></th>
+                      <th>Itinéraire</th>
+                      <th></th>
+                      <th>Date</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+          
+                  <div class="row pb-3">
+                      <h1>Sorties</h1>
+                  </div>
+                  {% for sortie in qs %}
+                      <tr>
+                          <td>{{sortie.utilisateur}}</td>
+                          <th></th>
+                          <td>{{sortie.itineraire}} </td>
+                          <th></th>
+                          <td>{{sortie.date_sortie }}</td>
+          
+                          <td><button type="button" class="btn btn-secondary" style="float:center" onclick= window.location.href="{% url 'itineraires:sortie_details' sortie.id %}">Consulter</button></td>
+                          <!-- N'affiche le bouton modifier que si l'utilisateur est l'auteur de la sortie -->
+                          {%if utilisateur == sortie.utilisateur%} 
+                          <td><button type="button" class="btn btn-secondary" style="float:center" onclick= window.location.href="{% url 'itineraires:modif_sortie' sortie.id %}">Modifier</button></td>
+                          {%endif%}
+                      </tr>
+                  
+                  {% endfor %}
+                </tbody>
+              </table>
+              {% endif %}
+                  
+              {% else %} 
+              <div>Aucun résultat pour votre recherche.</div>
+              {%endif%}
     </main>
 
 

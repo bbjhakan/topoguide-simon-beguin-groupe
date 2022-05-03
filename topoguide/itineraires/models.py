@@ -37,7 +37,7 @@ class Sortie(models.Model):
     """
     utilisateur = models.ForeignKey(User, on_delete=models.CASCADE) #Référence à enregistrements d'autres tables avec le type ForeignKey
     itineraire = models.ForeignKey(Itineraire, on_delete=models.CASCADE)
-    date_sortie = models.CharField('Date de la sortie', max_length= 20)
+    date_sortie = models.DateField('Date de la sortie')
     duree_reelle = models.FloatField('Durée réelle (en heure)')
     CHOIX_EXP = (('Tous débutants','Tous débutants'),('Tous expérimentés','Tous expérimentés'),('Mixte','Mixte')) # Liste de caractères avec choix pour expérience
     nombre_personne = models.FloatField('Nombre de personnes ayant réalisé la sortie')

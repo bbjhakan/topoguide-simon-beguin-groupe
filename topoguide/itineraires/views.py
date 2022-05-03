@@ -1,9 +1,9 @@
 from django.shortcuts import get_list_or_404, get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.utils import timezone
 from .forms import SortieForm
 from .models import Itineraire, Sortie
-
 
 # Create your views here.
 
@@ -101,14 +101,34 @@ def modif_sortie(request, sortie_id):
             return redirect('itineraires:sortie_details', sortie_id)
     return render(request, 'itineraires/modif_sortie.html', {'form': form, 'itineraire' : sortie.itineraire})
 
+def is_valid_query(param):
+    return param != '' and param is not None
+
 
 def SearchView(request):
-    qi = Itineraire.objects.all()
-    qs = Sortie.objects.all()
+    itineraire_query = Itineraire.objects.all()
+    sortie_query = Sortie.objects.all()
     query = request.GET.get('barre_recherche')
+    date_min = request.GET.get('date_min')
+    date_max = request.GET.get('date_max')
     
-    if query != '' and query is not None:
-        qi = qi.filter(titre__icontains = query)
-    return render(request, "itineraires/search_form.html", {'recherche': query, 'qi': qs, 'qi': qi})
+    if is_valid_query(query):
+        itineraire_query = itineraire_query.filter(Q(titre__icontains = query)  | ##on cherche dans le titre de l'itinéraire
+                                                   Q(description__icontains = query) | ## ou dans la description de l'itinéraire
+                                                   Q(point_depart__icontains = query)) ## ou dans le nom du point de départ
+        sortie_query = sortie_query.filter(Q(utilisateur__username__icontains = query) |
+                                           Q(itineraire__titre__icontains = query))
+    
+    
+    if is_valid_query(date_min):
+        sortie_query = sortie_query.filter(date_sortie__gte=date_min)                                       
+
+    
+    if is_valid_query(date_max):
+        sortie_query = sortie_query.filter(date_sortie__lt=date_max)                                       
+
+    
+    
+    return render(request, "itineraires/search_form.html", {'recherche': query, 'qs': sortie_query, 'qi': itineraire_query})
 
 
