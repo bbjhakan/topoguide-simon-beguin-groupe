@@ -1,6 +1,6 @@
 from django.shortcuts import get_list_or_404, get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.utils import timezone
 from .forms import SortieForm
 from .models import Itineraire, Sortie
@@ -108,9 +108,15 @@ def is_valid_query(param):
 def SearchView(request):
     itineraire_query = Itineraire.objects.all()
     sortie_query = Sortie.objects.all()
+    
     query = request.GET.get('barre_recherche')
     date_min = request.GET.get('date_min')
     date_max = request.GET.get('date_max')
+    difficulte = request.GET.get('difficulte')
+    duree_min = request.GET.get('duree_min')
+    duree_max = request.GET.get('duree_max')
+    
+    queryset = Sortie.objects.annotate()
     
     if is_valid_query(query):
         itineraire_query = itineraire_query.filter(Q(titre__icontains = query)  | ##on cherche dans le titre de l'itinéraire
@@ -119,16 +125,22 @@ def SearchView(request):
         sortie_query = sortie_query.filter(Q(utilisateur__username__icontains = query) |
                                            Q(itineraire__titre__icontains = query))
     
-    
     if is_valid_query(date_min):
         sortie_query = sortie_query.filter(date_sortie__gte=date_min)                                       
-
-    
     if is_valid_query(date_max):
         sortie_query = sortie_query.filter(date_sortie__lt=date_max)                                       
-
     
+    if is_valid_query(difficulte):
+        itineraire_query = itineraire_query.filter(difficulte = difficulte)
+        sortie_query = sortie_query.filter(difficulte_ressentie = difficulte)
     
-    return render(request, "itineraires/search_form.html", {'recherche': query, 'qs': sortie_query, 'qi': itineraire_query})
+    if is_valid_query(duree_min):
+        itineraire_query = itineraire_query.filter(duree__gte = duree_min)
+        sortie_query = sortie_query.filter(duree_reelle__gte=duree_min)                                       
+    if is_valid_query(duree_max):
+        itineraire_query = itineraire_query.filter(duree__lte = duree_max)
+        sortie_query = sortie_query.filter(duree_reelle__lte=duree_max)  
+    
+    return render(request, "itineraires/search_form.html", {'recherche': query, 'qs': sortie_query, 'qi': itineraire_query, 'date_min': date_min, 'date_max': date_max, 'difficulte': difficulte,'duree_min': duree_min, 'duree_max': duree_max})
 
 
