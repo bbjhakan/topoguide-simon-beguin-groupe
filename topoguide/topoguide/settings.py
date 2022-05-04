@@ -128,3 +128,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/itineraires/'
 
 LOGOUT_REDIRECT_URL = '/accounts/login/'
+
+MEDIA_URL = '/media/'
+
+MEDIA_UNDERSCORE_ROOT = 'media/'

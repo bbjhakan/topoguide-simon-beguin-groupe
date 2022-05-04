@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %} 
+
+{% block title %}Ecrivez votre commentaire{% endblock title%}
+
+{% block content %}
+
+        <form method="POST" action = "" class="post-form">
+        {% csrf_token %}
+
+        {{form}}
+
+        {# Bouton d'envoi du message #}
+        <input type = "submit"></button>
+    </form>
+    
+    {# En cas d'annulation, on revient à la page principale #}
+    <tbody>
+        <input type="button" onclick= window.location.href="/itineraires/" value="Annuler" style="float: left">
+    </tbody>
+    
+    
+{% endblock content %}
