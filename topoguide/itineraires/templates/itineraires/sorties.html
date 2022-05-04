@@ -1,12 +1,6 @@
 {% extends 'base.html' %}
 {% load bootstrap5 %} 
-
-<style>
-    #map{
-        width:100%;
-        height:600px;
-    }
-</style>
+{% load static %}
 
 {% block title %}Liste Sorties{% endblock title%}
 
@@ -18,7 +12,7 @@
         <h1>{{itineraire.titre}}</h1>
         {{itineraire.description}} depuis {{itineraire.point_depart}}
         <br><br>
-        <div class="container" id="mapid" style="width: 600px; height: 400px; float: right"></div>
+        <div class="container" id="mapid" style="width: 600px; height: 400px;float: right"></div>
             <tr>
                 <td><b>Altitude de départ</b> : {{itineraire.altitude_depart}} mètres</td>
                 <br>
@@ -33,23 +27,57 @@
                 <td><b>Durée estimée</b> : {{itineraire.duree}} heures</td>
                 <br>
                 <td><b>Difficulté</b> : {{itineraire.difficulte}} /5</td>
-                
+            </tr>
+
                 <!-- Ajout de la carte avec point de départ et d'arrivée-->
                 <div class="col">
                     <script type="text/javascript">
                         var map = L.map('mapid').setView([({{itineraire.latitude_arrivee}}+{{itineraire.latitude_depart}})/2, ({{itineraire.longitude_depart}}+{{itineraire.longitude_arrivee}})/2], 20);
+                        
+                        var LeafIcon = L.Icon.extend({
+                            options: {
+                                iconSize:     [30, 60],
+                                iconAnchor:   [70, 94],
+                                popupAnchor:  [-3, -76]
+                            }
+                        });
+
+                        var greenIcon = new LeafIcon({iconUrl: "{% static 'icones/arrivee.png' %}"});
+
+
                         // Déclaration du vecteur
-                        var point_depart = L.marker([{{itineraire.latitude_depart}}, {{itineraire.longitude_depart}}]).addTo(map);
-                        var point_arrivee = L.marker([{{itineraire.latitude_arrivee}}, {{itineraire.longitude_arrivee}}]).addTo(map);
+                        var point_depart = L.marker([{{itineraire.latitude_depart}}, {{itineraire.longitude_depart}}])
+                        .bindPopup('<h3> Départ </h3> <br> Depuis {{itineraire.point_depart}}')
+                        .addTo(map);
+
+                        var point_arrivee = L.marker([{{itineraire.latitude_arrivee}}, {{itineraire.longitude_arrivee}}],{icon: greenIcon})
+                        .bindPopup('<h3> Arrivée </h3>')
+                        .addTo(map);
+
                         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                        }).addTo(map);
+                            attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                            }).addTo(map);
+
+                        // create fullscreen control
+		                var fsControl = L.control.fullscreen();
+		                // add fullscreen control to the map
+		                map.addControl(fsControl);
+
+                        // detect fullscreen toggling
+		                map.on('enterFullscreen', function(){
+			            if(window.console) window.console.log('enterFullscreen');
+		                });
+		                map.on('exitFullscreen', function(){
+			            if(window.console) window.console.log('exitFullscreen');
+		                });
+
+                        L.control.scale().addTo(map);
                     </script>
-             
+
                 </div>
-            </tr>
         </div>
     </div>
+
 
 
 <!-- Affichage des différentes sorties -->
