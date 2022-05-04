@@ -66,8 +66,9 @@ def sortie(request, sortie_id):
     sortie = get_object_or_404(Sortie, pk=sortie_id)    
     liste_commentaires = get_list_or_404(Commentaire, sortie = sortie_id)
     photos = get_list_or_404(Photo, sortie = sortie_id)
+    utilisateur = request.user
     
-    return render(request, 'itineraires/sorties_details.html', {'sortie': sortie, 'liste_commentaires' : liste_commentaires, 'photos' : photos})
+    return render(request, 'itineraires/sorties_details.html', {'sortie': sortie, 'utilisateur':utilisateur,'liste_commentaires' : liste_commentaires, 'photos' : photos})
 
 
 @login_required

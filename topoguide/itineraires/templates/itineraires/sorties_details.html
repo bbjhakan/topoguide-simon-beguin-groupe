@@ -79,9 +79,12 @@
         <article class="sortie">
             <aside class="actions">
                 <!-- Ajout d'un icône pour éditer une sortie -->
+                <!-- N'affiche le bouton modifier que si l'utilisateur est l'auteur de la sortie -->
+                {%if utilisateur == sortie.utilisateur%} 
                 <a class="btn btn-default" href="{% url 'itineraires:modif_sortie' sortie.id %}">
                     {% include './icones/pencil-fill.svg' %} Éditer sortie
                 </a>
+                {%endif%}
             </aside>
         </article>
 
