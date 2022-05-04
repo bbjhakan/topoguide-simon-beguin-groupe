@@ -22,6 +22,9 @@
             <td><b>Durée estimée</b> : {{itineraire.duree}} heures</td>
             <br>
             <td><b>Difficulté</b> : {{itineraire.difficulte}} /5</td>
+
+
+
         </tr>
         </div>
 
@@ -30,9 +33,21 @@
     <form method="POST" action = "" class="post-form">{% csrf_token %}
         <div class="mb-3">
         {{ form.as_p }}
+        
     </div>
+
+
+    
+
+    <!-- Bouton d'enregistrement d'une photo -->
+        <input type="button" onclick= window.location.href="/itineraires/sortie/{{ sortie.id }}/photo"  value="Telecharger des photos" style="float: left">
+
+        <br>
+        <br>
         <button type="submit" class="button">Enregistrer</button>
     </form>
+
+    {# Bouton de retour en cas d'annulation #}
     <input type="button" onclick= window.location.href="/itineraires/" value="Annuler" style="float: left">
 {% endblock %}
 

@@ -1,9 +1,9 @@
 from django.shortcuts import get_list_or_404, get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q, Count
 from django.utils import timezone
-from .forms import SortieForm
-from .models import Itineraire, Sortie
-
+from .forms import SortieForm, CommentForm, PhotoForm
+from .models import Itineraire, Sortie, Commentaire, Photo
 
 # Create your views here.
 
@@ -29,10 +29,29 @@ def sorties(request, itineraire_id):
         itineraire_id : l'identifiant de l'itineraire 
 
     """
-    sorties  = get_list_or_404(Sortie, itineraire_id = itineraire_id)
+    sortie_query = Sortie.objects.all()
+
+    date_min = request.GET.get('date_min')
+    date_max = request.GET.get('date_max')
+    difficulte = request.GET.get('difficulte')
+    duree_min = request.GET.get('duree_min')
+    duree_max = request.GET.get('duree_max')
     itineraire = get_object_or_404(Itineraire, pk = itineraire_id)
     utilisateur = request.user
-    return render(request, 'itineraires/sorties.html', {'sorties': sorties, 'itineraire': itineraire, 'utilisateur':utilisateur})
+    
+    if is_valid_query(date_min):
+        sortie_query = sortie_query.filter(date_sortie__gte=date_min)                                       
+    if is_valid_query(date_max):
+        sortie_query = sortie_query.filter(date_sortie__lt=date_max)                                       
+    
+    if is_valid_query(difficulte):
+        sortie_query = sortie_query.filter(difficulte_ressentie = difficulte)
+    
+    if is_valid_query(duree_min):
+        sortie_query = sortie_query.filter(duree_reelle__gte=duree_min)                                       
+    if is_valid_query(duree_max):
+        sortie_query = sortie_query.filter(duree_reelle__lte=duree_max) 
+    return render(request, 'itineraires/sorties.html', {'itineraire': itineraire, 'utilisateur':utilisateur, 'qs': sortie_query, 'date_min': date_min, 'date_max': date_max, 'difficulte': difficulte,'duree_min': duree_min, 'duree_max': duree_max})
 
 
 @login_required
@@ -44,8 +63,11 @@ def sortie(request, sortie_id):
         request : la demande entrante
         itineraire_id : l'identifiant de la sortie
     """
-    sortie = get_object_or_404(Sortie, pk=sortie_id)
-    return render(request, 'itineraires/sorties_details.html', {'sortie': sortie})
+    sortie = get_object_or_404(Sortie, pk=sortie_id)    
+    liste_commentaires = get_list_or_404(Commentaire, sortie = sortie_id)
+    photos = get_list_or_404(Photo, sortie = sortie_id)
+    
+    return render(request, 'itineraires/sorties_details.html', {'sortie': sortie, 'liste_commentaires' : liste_commentaires, 'photos' : photos})
 
 
 @login_required
@@ -99,7 +121,98 @@ def modif_sortie(request, sortie_id):
             sortie.itineraire =  get_object_or_404(Itineraire, pk = sortie.itineraire.id) #pré-rempli l'itinéraire
             sortie.save()
             return redirect('itineraires:sortie_details', sortie_id)
-    return render(request, 'itineraires/modif_sortie.html', {'form': form, 'itineraire' : sortie.itineraire})
+    return render(request, 'itineraires/modif_sortie.html', {'form': form, 'itineraire' : sortie.itineraire, 'sortie' : sortie})
 
+
+def is_valid_query(param):
+    return param != '' and param is not None
+
+
+def SearchView(request):
+    itineraire_query = Itineraire.objects.all()
+    sortie_query = Sortie.objects.all()
+    
+    query = request.GET.get('barre_recherche')
+
+    difficulte = request.GET.get('difficulte')
+    duree_min = request.GET.get('duree_min')
+    duree_max = request.GET.get('duree_max')
+    
+    
+    if is_valid_query(query):
+        itineraire_query = itineraire_query.filter(Q(titre__icontains = query)  | ##on cherche dans le titre de l'itinéraire
+                                                   Q(description__icontains = query) | ## ou dans la description de l'itinéraire
+                                                   Q(point_depart__icontains = query)) ## ou dans le nom du point de départ
+        sortie_query = sortie_query.filter(Q(utilisateur__username__icontains = query) | ##on cherche dans le nom d'utilisateur
+                                           Q(itineraire__titre__icontains = query)).order_by('utilisateur') ##ou dans le titre de l'itinéraire auquel la sortie est associée
+                                      
+    
+    if is_valid_query(difficulte):
+        itineraire_query = itineraire_query.filter(difficulte = difficulte)
+        sortie_query = sortie_query.filter(difficulte_ressentie = difficulte)
+    
+    if is_valid_query(duree_min):
+        itineraire_query = itineraire_query.filter(duree__gte = duree_min)
+        sortie_query = sortie_query.filter(duree_reelle__gte=duree_min)                                       
+    if is_valid_query(duree_max):
+        itineraire_query = itineraire_query.filter(duree__lte = duree_max)
+        sortie_query = sortie_query.filter(duree_reelle__lte=duree_max)  
+    
+    return render(request, "itineraires/search_form.html", {'recherche': query, 'qs': sortie_query, 'qi': itineraire_query, 'difficulte': difficulte,'duree_min': duree_min, 'duree_max': duree_max})
+    
+
+@login_required
+def ajout_commentaire(request, sortie_id):
+    """
+    Ajoute un commentaire sous une sortie.
+    Args:
+        request : la demande entrante, GET or POST
+        sortie_id : l'identifiant de la sortie à modifier
+    Returns:
+        - Une page avec une boîte commentaire à remplir pour l'envoyer dans l'espace commentaire de la sortie associée.
+    """
+    
+    sortie = get_object_or_404(Sortie, pk=sortie_id)
+    
+    if request.method == 'POST':
+
+        form = CommentForm(request.POST)
+        if form.is_valid():
+
+            commentaire = form.save(commit=False)
+            commentaire.utilisateur_auteur = request.user
+            commentaire.sortie = sortie
+            commentaire.save()
+            
+            return redirect('itineraires:sortie_details', sortie_id)
+    else:
+      form = CommentForm()
+
+    return render(request, 'itineraires/commentaire.html', {'form': form})
+
+@login_required
+def photo_upload(request, sortie_id):
+    """
+    Args:
+        request : la demande entrante, GET or POST
+        sortie_id : l'identifiant de la sortie à modifier
+    Returns:
+        - Une page avec un bouton de téléchargement d'une photo. Celle-ci apparaîtra alors sur la page de la sortie associée.
+    """
+    
+    sortie = get_object_or_404(Sortie, pk=sortie_id)
+    form = PhotoForm()
+    if request.method == 'POST':
+        form = PhotoForm(request.POST, request.FILES)
+        if form.is_valid():
+            photo = form.save(commit = False)
+            photo.uploader = request.user
+            photo.sortie = sortie
+            photo.save()
+            return redirect('itineraires:sortie_details', sortie_id)
+    else:
+       form = PhotoForm()
+        
+    return render(request, 'itineraires/photo_upload.html', {'form' : form})
 
 
