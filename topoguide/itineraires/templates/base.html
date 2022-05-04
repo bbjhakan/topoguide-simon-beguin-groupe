@@ -54,13 +54,14 @@
 </head>
 
 <body >
-    <!-- Bar de navigation-->
+    <!-- Barre de navigation-->
     <ul>
         <li><b class="active" href="#home">TOPOGUIDE</b></li>
         <li><a href="/itineraires/">Itineraires</a></li>
         <li style="float:right"><a href="/accounts/logout/">Logout</a></li>
         <li class = "mx-auto">
-          <form method="GET" action="{% url 'itineraires:recherche' %}">
+          <!-- Ajout d'une barre de recherche dans la barre de navigation -->
+            <form method="GET" action="{% url 'itineraires:recherche' %}">
           <div class="form-row">
               <div class="form-group col-12">
                   <div class="input-group">
