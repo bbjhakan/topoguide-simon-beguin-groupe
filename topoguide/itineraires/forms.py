@@ -7,6 +7,7 @@ class SortieForm(forms.ModelForm):
     """
     
     edit_sortie = forms.BooleanField(widget=forms.HiddenInput, initial=True)
+    date_sortie = forms.DateField(widget=forms.TextInput(attrs={'placeholder': 'mm/jj/yyyy'}))
     class Meta:
         model = Sortie
         

@@ -28,7 +28,7 @@ def sorties(request, itineraire_id):
         itineraire_id : l'identifiant de l'itineraire 
 
     """
-    sortie_query = Sortie.objects.all()
+    sortie_query = Sortie.objects.filter(itineraire_id = itineraire_id)
 
     date_min = request.GET.get('date_min')
     date_max = request.GET.get('date_max')
@@ -82,18 +82,20 @@ def nouvelle_sortie(request, itineraire_id):
           avec des mauvaises donnée,
         - ou une page avec la sortie ajouté
     """
+    s = 0
     if request.method == 'GET':
         form = SortieForm()
     elif request.method == 'POST':
         form = SortieForm(request.POST)
         if form.is_valid():
             sortie = form.save(commit=False)
+            s = sortie
             sortie.utilisateur = request.user
             sortie.itineraire = get_object_or_404(Itineraire, pk=itineraire_id) #pré-rempli l'itinéraire
             sortie.save()
             return redirect('itineraires:sortie_details', sortie.id)
     itineraire = get_object_or_404(Itineraire, pk=itineraire_id )
-    return render(request, 'itineraires/modif_sortie.html', {'form': form, 'itineraire': itineraire})
+    return render(request, 'itineraires/nouvelle_sortie.html', {'form': form, 'itineraire': itineraire, 'sortie': s})
 
 
 @login_required
