@@ -49,12 +49,14 @@
             
             {% for commentaire in liste_commentaires %}
             {% if commentaire.statut %}
-            <tr>
+                <tr>
                 
-            <td>Par : {{commentaire.utilisateur_auteur}}</td>   
-            <td>Publié le {{commentaire.date}} 
-            <br>
-            {{commentaire.texte}}</td>
+                <td>Par : {{commentaire.utilisateur_auteur}}</td>   
+                <td>Publié le {{commentaire.date}} 
+                
+                <br>
+                {{commentaire.texte}}</td>
+                          
             
             </tr>
             {%endif%}
