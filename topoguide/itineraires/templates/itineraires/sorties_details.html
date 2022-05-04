@@ -46,31 +46,33 @@
                         Difficulté ressentie : {{ sortie.difficulte_ressentie }}
                         </td>
             </tr>
-            
-            {% for commentaire in liste_commentaires %}
-            {% if commentaire.statut %}
-                <tr>
+            {% if liste_commentaires %}
+
+                {% for commentaire in liste_commentaires %}
+                {% if commentaire.statut %}
+                    <tr>
+                    
+                    <td>Par : {{commentaire.utilisateur_auteur}}</td>   
+                    <td>Publié le {{commentaire.date}} 
+                    
+                    <br>
+                    {{commentaire.texte}}</td>
+                            
                 
-                <td>Par : {{commentaire.utilisateur_auteur}}</td>   
-                <td>Publié le {{commentaire.date}} 
+                </tr>
+                {%endif%}
+                {% endfor %}
+                {%endif%}
+                {# Permet l'affichage des photos sur la page de sortie associée#}
                 
-                <br>
-                {{commentaire.texte}}</td>
-                          
+
+                <h2>Photos</h2>
+                {% if photos%}
+                    {% for photo in photos %}
+                        <img src="{{ photo.image.url }}">
+                    {% endfor %}
+                {% endif %}
             
-            </tr>
-            {%endif%}
-            {% endfor %}
-
-            {# Permet l'affichage des photos sur la page de sortie associée#}
-            
-
-            <h2>Photos</h2>
-
-            {% for photo in photos %}
-                <img src="{{ photo.image.url }}">
-            {% endfor %}
-
 
 
         </tbody>
