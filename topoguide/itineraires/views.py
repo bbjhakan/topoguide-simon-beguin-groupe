@@ -15,7 +15,7 @@ def itineraires(request):
     Args:
         request : la demande entrante
     """
-    itineraires = get_list_or_404(Itineraire)
+    itineraires = Itineraire.objects.all()
     return render(request, 'itineraires/itineraires.html', {'itineraires': itineraires})
 
 
@@ -63,9 +63,9 @@ def sortie(request, sortie_id):
         request : la demande entrante
         itineraire_id : l'identifiant de la sortie
     """
-    sortie = get_object_or_404(Sortie, pk=sortie_id)    
-    liste_commentaires = get_list_or_404(Commentaire, sortie = sortie_id)
-    photos = get_list_or_404(Photo, sortie = sortie_id)
+    sortie = Sortie.objects.get(pk=sortie_id)    
+    liste_commentaires = Commentaire.objects.filter(pk = sortie_id)
+    photos = Photo.objects.filter(sortie = sortie_id)
     
     return render(request, 'itineraires/sorties_details.html', {'sortie': sortie, 'liste_commentaires' : liste_commentaires, 'photos' : photos})
 
