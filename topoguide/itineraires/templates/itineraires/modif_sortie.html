@@ -2,52 +2,57 @@
 {% load bootstrap5 %} 
 
 {% block content %}
-    <!-- Information sur l'itinéraire en entête-->
-    <div class="row pb-3">
-        <h1>Editer sortie pour {{itineraire.titre}}</h1>
-        {{itineraire.description}} depuis {{itineraire.point_depart}}
-        <br><br>
-        <div class="container">
-        <tr>
-            <td><b>Altitude de départ</b> : {{itineraire.altitude_depart}} mètres</td>
-            <br>
-            <td><b>Altitude minimale</b> : {{itineraire.altitude_minimale}} mètres</td>
-            <br>
-            <td><b>Altitude maximale</b> : {{itineraire.altitude_maximale}} mètres</td>
-            <br>
-            <td><b>Dénivelé positif cumulé</b> : {{itineraire.denivele_positif_cumule}} mètres </td>
-            <br>
-            <td><b>Dénivelé négatif cumulé</b> : {{itineraire.denivele_negatif_cumule}} mètres </td>
-            <br>
-            <td><b>Durée estimée</b> : {{itineraire.duree}} heures</td>
-            <br>
-            <td><b>Difficulté</b> : {{itineraire.difficulte}} /5</td>
+    {% if sortie.utilisateur == request.user %}
+        <!-- Information sur l'itinéraire en entête-->
+        <div class="row pb-3">
+            <h1>Editer sortie pour {{itineraire.titre}}</h1>
+            {{itineraire.description}} depuis {{itineraire.point_depart}}
+            <br><br>
+            <div class="container">
+            <tr>
+                <td><b>Altitude de départ</b> : {{itineraire.altitude_depart}} mètres</td>
+                <br>
+                <td><b>Altitude minimale</b> : {{itineraire.altitude_minimale}} mètres</td>
+                <br>
+                <td><b>Altitude maximale</b> : {{itineraire.altitude_maximale}} mètres</td>
+                <br>
+                <td><b>Dénivelé positif cumulé</b> : {{itineraire.denivele_positif_cumule}} mètres </td>
+                <br>
+                <td><b>Dénivelé négatif cumulé</b> : {{itineraire.denivele_negatif_cumule}} mètres </td>
+                <br>
+                <td><b>Durée estimée</b> : {{itineraire.duree}} heures</td>
+                <br>
+                <td><b>Difficulté</b> : {{itineraire.difficulte}} /5</td>
 
 
 
-        </tr>
+            </tr>
+            </div>
+
+        </div>
+        <!-- Formulaire de création d'une sortie-->
+        <form method="POST" action = "" class="post-form">{% csrf_token %}
+            <div class="mb-3">
+            {{ form.as_p }}
+            
         </div>
 
-    </div>
-    <!-- Formulaire de création d'une sortie-->
-    <form method="POST" action = "" class="post-form">{% csrf_token %}
-        <div class="mb-3">
-        {{ form.as_p }}
+
         
-    </div>
 
+        <!-- Bouton d'enregistrement d'une photo -->
+            <input type="button" onclick= window.location.href="{% url 'itineraires:photo_upload' sortie.id %}"  value="Telecharger des photos" style="float: left">
 
-    
+            <br>
+            <br>
+            <button type="submit" class="button">Enregistrer</button>
+        </form>
 
-    <!-- Bouton d'enregistrement d'une photo -->
-        <input type="button" onclick= window.location.href="/itineraires/sortie/{{ sortie.id }}/photo"  value="Telecharger des photos" style="float: left">
-
-        <br>
-        <br>
-        <button type="submit" class="button">Enregistrer</button>
-    </form>
-
-    {# Bouton de retour en cas d'annulation #}
-    <input type="button" onclick= window.location.href="/itineraires/" value="Annuler" style="float: left">
+        {# Bouton de retour en cas d'annulation #}
+        <input type="button" onclick= window.location.href="{% url 'itineraires:sortie_details' sortie.id %}" value="Annuler" style="float: left">
+    {% else %} 
+    <p> Vous n'êtes pas l'auteur de cette sortie, et ne pouvez donc pas la modifier !</p>
+    <a href="{% url 'itineraires:sortie_details' sortie.id %}"> Retour sur la page de détail de la sortie </a>
+    {%endif%}
 {% endblock %}
 

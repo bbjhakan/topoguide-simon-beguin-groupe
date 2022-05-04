@@ -16,7 +16,7 @@
     
     {# En cas d'annulation, on revient à la page principale #}
     <tbody>
-        <input type="button" onclick= window.location.href="/itineraires/" value="Annuler" style="float: left">
+        <input type="button" onclick= window.location.href="{% url 'itineraires:sortie_details' sortie_id%}" value="Annuler" style="float: left">
     </tbody>
     
     

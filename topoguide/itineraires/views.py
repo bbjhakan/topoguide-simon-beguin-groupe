@@ -7,7 +7,7 @@ from .models import Itineraire, Sortie, Commentaire, Photo
 
 # Create your views here.
 
-@login_required
+
 def itineraires(request):
     """
     Prends les itinéraires créés et les affiches
@@ -19,7 +19,6 @@ def itineraires(request):
     return render(request, 'itineraires/itineraires.html', {'itineraires': itineraires})
 
 
-@login_required
 def sorties(request, itineraire_id):
     """
     Prends les sorties créés  et les affiches
@@ -54,7 +53,6 @@ def sorties(request, itineraire_id):
     return render(request, 'itineraires/sorties.html', {'itineraire': itineraire, 'utilisateur':utilisateur, 'qs': sortie_query, 'date_min': date_min, 'date_max': date_max, 'difficulte': difficulte,'duree_min': duree_min, 'duree_max': duree_max})
 
 
-@login_required
 def sortie(request, sortie_id):
     """
     Prend une sortie et affiche les détails
@@ -64,7 +62,7 @@ def sortie(request, sortie_id):
         itineraire_id : l'identifiant de la sortie
     """
     sortie = Sortie.objects.get(pk=sortie_id)    
-    liste_commentaires = Commentaire.objects.filter(pk = sortie_id)
+    liste_commentaires = Commentaire.objects.filter(sortie_id = sortie_id)
     photos = Photo.objects.filter(sortie = sortie_id)
     utilisateur = request.user
     
@@ -209,7 +207,7 @@ def ajout_commentaire(request, sortie_id):
     else:
       form = CommentForm()
 
-    return render(request, 'itineraires/commentaire.html', {'form': form})
+    return render(request, 'itineraires/commentaire.html', {'form': form, 'sortie_id': sortie_id})
 
 @login_required
 def photo_upload(request, sortie_id):

@@ -58,7 +58,11 @@
     <ul>
         <li><b class="active" href="#home">TOPOGUIDE</b></li>
         <li><a href="/itineraires/">Itineraires</a></li>
-        <li style="float:right"><a href="/accounts/logout/">Logout</a></li>
+        {% if user.is_authenticated %}
+        <li style="float:right"><a href="{% url 'logout'%}?next={{request.path}}">Se déconnecter</a></li>
+        {% else %}
+        <li style="float:right"><a href="{% url 'login'%}?next={{request.path}}">Se connecter</a></li>
+        {% endif %}
         <li class = "mx-auto">
           <!-- Ajout d'une barre de recherche dans la barre de navigation -->
             <form method="GET" action="{% url 'itineraires:recherche' %}">
