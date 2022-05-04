@@ -91,7 +91,7 @@ def nouvelle_sortie(request, itineraire_id):
         if form.is_valid():
             sortie = form.save(commit=False)
             sortie.utilisateur = request.user
-            sortie.itineraire = get_object_or_404(Itineraire, pk=itineraire_id)#pré-rempli l'itinéraire
+            sortie.itineraire = get_object_or_404(Itineraire, pk=itineraire_id) #pré-rempli l'itinéraire
             sortie.save()
             return redirect('itineraires:sortie_details', sortie.id)
     itineraire = get_object_or_404(Itineraire, pk=itineraire_id )
@@ -126,18 +126,37 @@ def modif_sortie(request, sortie_id):
 
 
 def is_valid_query(param):
+    """ Vérifie si le paramètre est valide
+
+    Args:
+        param : contenu de la barre de recherche/d'un filtre
+
+    Returns:
+        booléen : vrai s'il existe un champ dans la barre de recherche/le filtre
+    """
     return param != '' and param is not None
 
 
 def SearchView(request):
+    """ 
+    Permet d'afficher les itinéraires/sorties qui correspondent à la demande via la barre de recherche
+
+    Args:
+        request : la demande entrante
+
+    Returns:
+        - une page avec le résultat de la recherche
+        Sur cette page, on peut appliquer un certain nombre de filtres pour filtrer les résultats de la recherche.
+        S'il n'y a pas de résultat, on indique à l'utilisateur qu'il n'existe pas de résultats correspondant à sa recherche.
+    """
     itineraire_query = Itineraire.objects.all()
     sortie_query = Sortie.objects.all()
     
-    query = request.GET.get('barre_recherche')
+    query = request.GET.get('barre_recherche') ##récupère le champ à l'intérieur de la barre de recherche
 
-    difficulte = request.GET.get('difficulte')
-    duree_min = request.GET.get('duree_min')
-    duree_max = request.GET.get('duree_max')
+    difficulte = request.GET.get('difficulte') ##récupère le champ à l'intérieur du filtre correspondant à la difficulté souhaitée
+    duree_min = request.GET.get('duree_min') ##récupère le champ à l'intérieur du filtre correspondant à la durée minimale souhaitée
+    duree_max = request.GET.get('duree_max') ##récupère le champ à l'intérieur du filtre correspondant à la durée maximale souhaitée
     
     
     if is_valid_query(query):
@@ -149,15 +168,16 @@ def SearchView(request):
                                       
     
     if is_valid_query(difficulte):
-        itineraire_query = itineraire_query.filter(difficulte = difficulte)
-        sortie_query = sortie_query.filter(difficulte_ressentie = difficulte)
+        itineraire_query = itineraire_query.filter(difficulte = difficulte) ##on récupère uniquement les itinéraires avec la difficulté estimée précisée
+        sortie_query = sortie_query.filter(difficulte_ressentie = difficulte)##on récupère uniquement les itinéraires avec la difficulté ressentie précisée
     
     if is_valid_query(duree_min):
-        itineraire_query = itineraire_query.filter(duree__gte = duree_min)
-        sortie_query = sortie_query.filter(duree_reelle__gte=duree_min)                                       
+        itineraire_query = itineraire_query.filter(duree__gte = duree_min)##vérifie que la durée estimée de l'itinéraire est supérieure ou égale à la durée précisée
+        sortie_query = sortie_query.filter(duree_reelle__gte=duree_min)    ##vérifie que la durée réelle de la sortie est supérieure ou égale à la durée précisée
+                          
     if is_valid_query(duree_max):
-        itineraire_query = itineraire_query.filter(duree__lte = duree_max)
-        sortie_query = sortie_query.filter(duree_reelle__lte=duree_max)  
+        itineraire_query = itineraire_query.filter(duree__lte = duree_max) ##vérifie que la durée estimée de l'itinéraire est inférieure ou égale à la durée précisée
+        sortie_query = sortie_query.filter(duree_reelle__lte=duree_max)   ##vérifie que la durée réelle de la sortie est inférieure ou égale à la durée précisée
     
     return render(request, "itineraires/search_form.html", {'recherche': query, 'qs': sortie_query, 'qi': itineraire_query, 'difficulte': difficulte,'duree_min': duree_min, 'duree_max': duree_max})
     

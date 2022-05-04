@@ -16,11 +16,12 @@
     <main role="main" class="container">
       
       <h3>Résultats de la recherche pour: {{recherche}}</h3>
-        
+
+      <!-- Permet de créer un bouton déroulant qui contient les filtres à l'intérieur -->
       <div class="pos-f-t">
         <div class="collapse" id="navbarToggleExternalContent">
           <form method="GET" action="{%url 'itineraires:recherche' %}">        
-          
+          <!-- Champ avec le champ de recherche pour pouvoir le modifier si souhaité-->
             <div class = "form-row">
               <div class="form-group col-md-2 col-lg-2">
                 <label for="recherche"> Votre recherche: </label>
@@ -60,6 +61,7 @@
       </div>
           
       <br/>
+      <!-- Permet d'afficher les filtres qui sont appliqués -->
       <div> Liste de filtre(s) appliqué(s): <br/>
         {% if  duree_max or duree_min or difficulte%}
           {% if duree_min %}
@@ -74,8 +76,10 @@
         {% else %} Aucun filtre activé {%endif%}
       </div>
       <hr />
-            {% if qi or qs  %}
 
+        <!-- Vérifie qu'il existe des itinéraires ou des sorties qui correspondent au champ de recherche-->
+            {% if qi or qs  %}
+            
               {% if qi  %}
               <div class="row pb-3">
                 <h1>Itinéraires</h1>
@@ -91,7 +95,7 @@
                       </tr>
                       </thead>
                       <tbody>
-                      <!-- Affichage de tous les itinéraires-->
+                      <!-- Affichage de tous les itinéraires qui correspondent à la recherche. -->
                       {% for itineraire in qi %}
                               <tr>
                               <td><a href="{% url 'itineraires:sorties' itineraire.id %}">{{ itineraire.titre }}</a></td>
@@ -124,6 +128,8 @@
                   <div class="row pb-3">
                       <h1>Sorties</h1>
                   </div>
+
+                  <!-- Affichage de toutes les sorties qui correspondent à la recherche. -->
                   {% for sortie in qs %}
                       <tr>
                           <td>{{sortie.utilisateur}}</td>

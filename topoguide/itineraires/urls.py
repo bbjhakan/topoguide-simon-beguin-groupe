@@ -14,7 +14,7 @@ urlpatterns = [
     path('nouvelle_sortie/<int:itineraire_id>/', views.nouvelle_sortie, name='nouvelle_sortie'),
     # ex: /itineraires/modif_sortie/2/
     path('modif_sortie/<int:sortie_id>/', views.modif_sortie, name='modif_sortie'),
-    
+    # ex: /itineraires/recherche/ 
     path('recherche/', views.SearchView, name='recherche'),
     # ex : /itineraires/sortie/1/post_commentaire/
     path('sortie/<int:sortie_id>/post_commentaire/' , views.ajout_commentaire, name='ajout_commentaire'),
