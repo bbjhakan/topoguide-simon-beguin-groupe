@@ -140,7 +140,7 @@ def SearchView(request):
                                                    Q(description__icontains = query) | ## ou dans la description de l'itinéraire
                                                    Q(point_depart__icontains = query)) ## ou dans le nom du point de départ
         sortie_query = sortie_query.filter(Q(utilisateur__username__icontains = query) | ##on cherche dans le nom d'utilisateur
-                                           Q(itineraire__titre__icontains = query)) ##ou dans le titre de l'itinéraire auquel la sortie est associée
+                                           Q(itineraire__titre__icontains = query)).order_by('utilisateur') ##ou dans le titre de l'itinéraire auquel la sortie est associée
                                       
     
     if is_valid_query(difficulte):
