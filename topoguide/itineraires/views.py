@@ -50,6 +50,7 @@ def sorties(request, itineraire_id):
         sortie_query = sortie_query.filter(duree_reelle__gte=duree_min)                                       
     if is_valid_query(duree_max):
         sortie_query = sortie_query.filter(duree_reelle__lte=duree_max) 
+    sortie_query = sortie_query.order_by('-date_sortie')
     return render(request, 'itineraires/sorties.html', {'itineraire': itineraire, 'utilisateur':utilisateur, 'qs': sortie_query, 'date_min': date_min, 'date_max': date_max, 'difficulte': difficulte,'duree_min': duree_min, 'duree_max': duree_max})
 
 
