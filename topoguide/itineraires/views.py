@@ -179,7 +179,8 @@ def SearchView(request):
     if is_valid_query(duree_max):
         itineraire_query = itineraire_query.filter(duree__lte = duree_max) ##vérifie que la durée estimée de l'itinéraire est inférieure ou égale à la durée précisée
         sortie_query = sortie_query.filter(duree_reelle__lte=duree_max)   ##vérifie que la durée réelle de la sortie est inférieure ou égale à la durée précisée
-    
+    itineraire_query = itineraire_query.order_by('titre')
+    sortie_query = sortie_query.order_by('-date_sortie')
     return render(request, "itineraires/search_form.html", {'recherche': query, 'qs': sortie_query, 'qi': itineraire_query, 'difficulte': difficulte,'duree_min': duree_min, 'duree_max': duree_max})
     
 
