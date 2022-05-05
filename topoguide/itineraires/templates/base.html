@@ -64,7 +64,7 @@
         {% else %}
         <li style="float:right; padding-left: 13%"><a href="{% url 'login'%}?next={{request.path}}">Se connecter</a></li>
         {% endif %}
-        <li class = "mx-auto" style="float:right">
+        <li class = "mx-bg" style="float:right">
           <!-- Ajout d'une barre de recherche dans la barre de navigation -->
             <form method="GET" action="{% url 'itineraires:recherche' %}">
               <div class="form-row mx-auto">

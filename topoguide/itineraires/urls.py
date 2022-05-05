@@ -7,7 +7,7 @@ urlpatterns = [
     # ex: /itineraires/
     path('', views.itineraires, name='itineraires'),
     # ex: /itineraires/1/
-    path('sorties/<int:itineraire_id>/', views.sorties, name='sorties'),
+    path('<int:itineraire_id>/', views.sorties, name='sorties'),
     # ex: /itineraires/sortie/3/
     path('sortie/<int:sortie_id>/', views.sortie, name='sortie_details'),
     # ex: /itineraires/nouvelle_sortie/1/
