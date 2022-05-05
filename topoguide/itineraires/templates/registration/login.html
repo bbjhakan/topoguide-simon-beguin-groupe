@@ -1,31 +1,32 @@
-
 {% extends 'base.html' %}
-{% load bootstrap5 %}
-
+{% load bootstrap5 %} 
 
 {% block content %}
-<div id="content" class="flex">
-    <div class="" >
-        <div class="page-content page-container" id="page-content">
-            <div class="padding">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-header"><strong>Se connecter à votre compte</strong></div>
-                                <div class="card-body">
-                                    <form method="post" action="{% url 'login' %}">
-                                    {% csrf_token %}
-                                    {{ form }}
-                                    <div class="form-group"><input type="submit" value="login">
-                                    <input type="hidden" name="next" value="{{ next }}">
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
+<style>
+.container {
+    padding-bottom: 850px;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #888;
+  }
+
+</style>
+</head>
+<body>
+
+<h2>Connexion</h2>
+
+<form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    {{ form }}
+    <div class="form-group"><input type="submit" value="login">
+    <input type="hidden" name="next" value="{{ next }}">
+    </form>
+
 {% endblock content %}

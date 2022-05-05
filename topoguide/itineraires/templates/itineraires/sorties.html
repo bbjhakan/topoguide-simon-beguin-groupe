@@ -29,49 +29,53 @@
                 <td><b>Difficulté</b> : {{itineraire.difficulte}}/5</td>
             </tr>
 
-                <!-- Ajout de la carte avec point de départ et d'arrivée-->
+                <!-- Ajout de la map
+                     avec point de départ et d'arrivée-->
                 <div class="col">
                     <script type="text/javascript">
-                        var map = L.map('mapid').setView([({{itineraire.latitude_arrivee}}+{{itineraire.latitude_depart}})/2, ({{itineraire.longitude_depart}}+{{itineraire.longitude_arrivee}})/2], 20);
+                        //Création de la map avec un centrage entre le point de départ et d'arrivée et un zoom de départ
+                        var map = L.map('mapid').setView([({{itineraire.latitude_arrivee}}+{{itineraire.latitude_depart}})/2, ({{itineraire.longitude_depart}}+{{itineraire.longitude_arrivee}})/2], 15);
                         
-                        var LeafIcon = L.Icon.extend({
-                            options: {
-                                iconSize:     [30, 60],
-                                iconAnchor:   [70, 94],
-                                popupAnchor:  [-3, -76]
-                            }
+                        //Création d'un icone pour l'arrivée
+                        var icone_arrivee = L.icon({
+                            iconUrl: "{% static 'icones/arrivee.png' %}", //Path pour accèder à l'icone
+                            iconAnchor: [12,36] //Point d'ancrage de l'icone
                         });
 
-                        var greenIcon = new LeafIcon({iconUrl: "{% static 'icones/arrivee.png' %}"});
-
-
-                        // Déclaration du vecteur
+                        // Déclaration des vecteurs (icones)
                         var point_depart = L.marker([{{itineraire.latitude_depart}}, {{itineraire.longitude_depart}}])
-                        .bindPopup('<h3> Départ </h3> <br> Depuis {{itineraire.point_depart}}')
+                        .bindPopup('<h3> Départ </h3> <br> Depuis {{itineraire.point_depart}}')//HTML qui s'affiche lorsque l'on clique sur le point
                         .addTo(map);
 
-                        var point_arrivee = L.marker([{{itineraire.latitude_arrivee}}, {{itineraire.longitude_arrivee}}],{icon: greenIcon})
-                        .bindPopup('<h3> Arrivée </h3>')
+                        var point_arrivee = L.marker([{{itineraire.latitude_arrivee}}, {{itineraire.longitude_arrivee}}],{icon: icone_arrivee})
+                        .bindPopup('<h3> Arrivée </h3>')//HTML qui s'affiche lorsque l'on clique sur le point
                         .addTo(map);
+
+                        //Ajout d'un titre à la map
 
                         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                             attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                             }).addTo(map);
 
-                        // create fullscreen control
+                        // Création bouton pour plein écran
 		                var fsControl = L.control.fullscreen();
-		                // add fullscreen control to the map
+		                // Ajout bouton pour plein écran à la map
+
 		                map.addControl(fsControl);
 
-                        // detect fullscreen toggling
+                        // Detection plein écran
 		                map.on('enterFullscreen', function(){
 			            if(window.console) window.console.log('enterFullscreen');
 		                });
 		                map.on('exitFullscreen', function(){
 			            if(window.console) window.console.log('exitFullscreen');
 		                });
+                        
+                        // Ajout d'une échelle à la map
 
                         L.control.scale().addTo(map);
+
+
                     </script>
 
                 </div>
