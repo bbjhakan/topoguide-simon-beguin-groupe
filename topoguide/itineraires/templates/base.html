@@ -58,7 +58,7 @@
     <!-- Barre de navigation-->
     <ul>
         <li><b class="active" href="#home">TOPOGUIDE</b></li>
-        <li><a href="/itineraires/">Itineraires</a></li>
+        <li><a href="{% url 'itineraires:itineraires' %}">Itineraires</a></li>
         {% if user.is_authenticated %}
         <li style="float:right; padding-left : 13%"><a href="{% url 'logout'%}?next={{request.path}}">Se déconnecter</a></li>
         {% else %}
