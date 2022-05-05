@@ -166,7 +166,7 @@
                 <tr>
                     <th>Par</th>
                     <th></th>
-                    <th>Date</th>
+                    <th>Date de sortie</th>
                     <th></th>
                     <th>Difficulté ressentie</th>
                     <th></th>
@@ -180,7 +180,7 @@
                     <tr>
                         <td>{{sortie.utilisateur}}</td>
                         <th></th>
-                        <td>{{ sortie.date_sortie }}</td>
+                        <td>{{ sortie.date_sortie|date:'d/m/Y'}}</td>
                         <th></th>
                         <td> {{sortie.difficulte_ressentie}}/5 </td>
                         <th></th>
