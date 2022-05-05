@@ -148,6 +148,8 @@
                           <!-- N'affiche le bouton modifier que si l'utilisateur est l'auteur de la sortie -->
                           {%if sortie.utilisateur == request.user %} 
                           <td><button type="button" class="btn btn-secondary" style="float:center" onclick= window.location.href="{% url 'itineraires:modif_sortie' sortie.id %}">Modifier</button></td>
+                          {%else%}
+                          <td></td>
                           {%endif%}
                       </tr>
                   
