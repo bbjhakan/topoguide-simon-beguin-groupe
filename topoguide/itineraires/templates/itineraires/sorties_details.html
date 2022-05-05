@@ -12,6 +12,7 @@
     <br><br>
     <div class="container">
     <tr>
+        <h2> Itinéraire: </h2>
         <td><b>Altitude de départ</b> : {{sortie.itineraire.altitude_depart}} mètres</td>
         <br>
         <td><b>Altitude minimale</b> : {{sortie.itineraire.altitude_minimale}} mètres</td>
@@ -30,52 +31,22 @@
 
 </div>
 
-<div class="row">
-    <table class="table table-striped">
-        <tbody>
+            <h2> Détails sur la sortie </h2>
             <tr>
                          <td>
-                        Date : {{ sortie.date_sortie }}
+                            <b>Date de sortie:</b> {{ sortie.date_sortie|date:'d/m/Y'   }} </td>
                         <br>
-                        Durée réelle : {{ sortie.duree_reelle }}
+                    <td><b>Durée réelle :</b> {{ sortie.duree_reelle }} h</td>
                         <br>
-                        Expérience : {{ sortie.experience }}
+                    <td><b>Nombre de personnes :</b> {{sortie.nombre_personne}}</td>
                         <br>
-                        Météo : {{ sortie.meteo }}
+                    <td><b>Expérience :</b> {{ sortie.experience }}</td>
                         <br>
-                        Difficulté ressentie : {{ sortie.difficulte_ressentie }}
+                    <td><b>Météo :</b> {{ sortie.meteo }}</td>
+                        <br>
+                    <td><b>Difficulté ressentie :</b> {{ sortie.difficulte_ressentie }}</td>
                         </td>
-            </tr>
-            {% if liste_commentaires %}
-
-                {% for commentaire in liste_commentaires %}
-                    {% if commentaire.statut %}
-                        <tr>
-                        
-                        <td>Par : {{commentaire.utilisateur_auteur}}</td>   
-                        <td>Publié le {{commentaire.date}} 
-                        
-                        <br>
-                        {{commentaire.texte}}</td>
-                                
-                    
                     </tr>
-                    {%endif%}
-                {% endfor %}
-            {%endif%}
-                {# Permet l'affichage des photos sur la page de sortie associée#}
-                
-
-            <h2>Photos</h2>
-            {% if photos%}
-                {% for photo in photos %}
-                    <img src="{{ photo.image.url }}">
-                {% endfor %}
-            {% endif %}
-            
-
-
-        </tbody>
 
         
         <article class="sortie">
@@ -90,12 +61,46 @@
             </aside>
         </article>
 
-        <div class="row pb-3">
-            <td><button type="button" class="btn btn-secondary" style="float:center" onclick= window.location.href="{% url 'itineraires:ajout_commentaire' sortie.id %}">Ajouter un commentaire</button></td>
-        </div>
 
-    </table>
-</div>
 
+</table>
+
+<div class="row">
+    <table class="table table-striped">
+        <tbody>
+            {% if liste_commentaires %}
+
+                        {% for commentaire in liste_commentaires %}
+                            {% if commentaire.statut %}
+                                <tr>
+                                
+                                <td>Par : {{commentaire.utilisateur_auteur}}</td>   
+                                <td>Publié le {{commentaire.date}} 
+                                
+                                <br>
+                                {{commentaire.texte}}</td>
+                                        
+                            
+                            </tr>
+                            {%endif%}
+                        {% endfor %}
+                    {%endif%}
+                    <div class="row pb-3">
+                        <td><button type="button" class="btn btn-secondary" style="float:center" onclick= window.location.href="{% url 'itineraires:ajout_commentaire' sortie.id %}">Ajouter un commentaire</button></td>
+                    </div>
+                </tbody>
+            </table>
+    </div>
+
+
+
+                    {# Permet l'affichage des photos sur la page de sortie associée#}
+    <h2>Photos</h2>
+                {% if photos%}
+                    {% for photo in photos %}
+                        <img src="{{ photo.image.url }}">
+                    {% endfor %}
+                {% endif %}
+            
 {% endblock content %}
 

@@ -45,7 +45,7 @@ class Sortie(models.Model):
     date_sortie = models.DateField('Date de la sortie',validators=[MaxValueValidator(limit_value=datetime.date.today)])
     duree_reelle = models.IntegerField('Durée réelle (en heure)',validators=[MinValueValidator(1)])
     CHOIX_EXP = (('Tous débutants','Tous débutants'),('Tous expérimentés','Tous expérimentés'),('Mixte','Mixte')) # Liste de caractères avec choix pour expérience
-    nombre_personne = models.IntegerField('Nombre de personnes ayant réalisé la sortie', validators=[MinValueValidator(1)])
+    nombre_personne = models.PositiveIntegerField('Nombre de personnes ayant réalisé la sortie', validators=[MinValueValidator(1)])
     experience = models.CharField('Expérience du groupe', max_length= 20,choices=CHOIX_EXP)
     CHOIX_METEO = (('Bonne','Bonne'),('Moyenne','Moyenne'),('Mauvaise','Mauvaise'))
     meteo = models.CharField('Météo', max_length= 20,choices=CHOIX_METEO)
