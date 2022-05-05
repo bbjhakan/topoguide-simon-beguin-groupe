@@ -33,7 +33,7 @@
         <!-- Formulaire de création d'une sortie-->
         <form method="POST" action = "" class="post-form">{% csrf_token %}
             <div class="mb-3">
-            {{ form.as_p }}
+            {% bootstrap_form form %}
             
         </div>
 
@@ -41,15 +41,17 @@
         
 
         <!-- Bouton d'enregistrement d'une photo -->
-            <input type="button" onclick= window.location.href="{% url 'itineraires:photo_upload' sortie.id %}"  value="Telecharger des photos" style="float: left">
+            <input type="button" onclick= window.location.href="{% url 'itineraires:photo_upload' sortie.id %}"  class="btn btn-secondary" value="Telecharger des photos" style="float: left">
 
             <br>
             <br>
-            <button type="submit" class="button">Enregistrer</button>
+            <button type="submit" class="btn btn-secondary">Enregistrer</button>
+            <br>
+
         </form>
 
         {# Bouton de retour en cas d'annulation #}
-        <input type="button" onclick= window.location.href="{% url 'itineraires:sortie_details' sortie.id %}" value="Annuler" style="float: left">
+        <input type="button" onclick= window.location.href="{% url 'itineraires:sortie_details' sortie.id %}" class="btn btn-secondary" value="Annuler" style="float: left">
     {% else %} 
     <p> Vous n'êtes pas l'auteur de cette sortie et ne pouvez donc pas la modifier !</p>
     <a href="{% url 'itineraires:sortie_details' sortie.id %}"> Retour sur la page de détail de la sortie </a>

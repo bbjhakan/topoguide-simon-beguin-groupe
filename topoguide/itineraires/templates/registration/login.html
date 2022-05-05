@@ -8,11 +8,12 @@
 
 <h2>Connexion</h2>
 
-<form method="post" action="{% url 'login' %}">
+<form action="{% url 'login' %}" method="post" class="form">
     {% csrf_token %}
-    {{ form }}
-    <div class="form-group"><input type="submit" value="login">
-    <input type="hidden" name="next" value="{{ next }}">
-    </form>
+    {% bootstrap_form form %}
+    {% buttons %}
+      <button type="submit" class="btn btn-primary">Login</button>
+    {% endbuttons %}
+</form>
 
 {% endblock content %}
