@@ -19,7 +19,7 @@ class Itineraire(models.Model):
     longitude_depart = models.FloatField('Longitude point de départ')
     latitude_arrivee = models.FloatField('Latitude point arrivée')
     longitude_arrivee = models.FloatField('Longitude point arrivée')
-    description = models.CharField(max_length=400)
+    description = models.CharField(max_length=2000)
     altitude_depart = models.PositiveIntegerField('Altitude de départ (m)')
     altitude_minimale = models.PositiveIntegerField('Altitude minimale (m)')
     altitude_maximale = models.PositiveIntegerField('Altitude maximale (m)')

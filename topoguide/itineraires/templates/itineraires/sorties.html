@@ -10,10 +10,12 @@
     <div class="row">
         <div class="col">
         <h1>{{itineraire.titre}}</h1>
-        {{itineraire.description}} depuis {{itineraire.point_depart}}
+        {{itineraire.description}}
         <br><br>
         <div class="container" id="mapid" style="width: 600px; height: 400px;float: right"></div>
             <tr>
+                <td><b>Point de départ</b> : {{itineraire.point_depart}}</td>
+                <br>
                 <td><b>Altitude de départ</b> : {{itineraire.altitude_depart}} mètres</td>
                 <br>
                 <td><b>Altitude minimale</b> : {{itineraire.altitude_minimale}} mètres</td>
