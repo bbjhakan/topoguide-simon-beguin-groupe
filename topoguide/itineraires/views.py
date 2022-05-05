@@ -1,6 +1,6 @@
-from django.shortcuts import get_list_or_404, get_object_or_404, render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q, Count
+from django.db.models import Q
 from django.utils import timezone
 from .forms import SortieForm, CommentForm, PhotoForm
 from .models import Itineraire, Sortie, Commentaire, Photo
