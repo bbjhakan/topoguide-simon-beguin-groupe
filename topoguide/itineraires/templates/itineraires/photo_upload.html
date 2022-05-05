@@ -1,16 +1,18 @@
 {% extends 'base.html' %}
 {% block content %}
+{% load bootstrap5 %} 
+
     {% if sortie.utilisateur == request.user %}
         <h2>Télécharger une photo</h2>
         <form method="post" enctype="multipart/form-data">
             {# Création du formulaire pour uploader une photo #}
-            {{ form.as_p }}
+            {% bootstrap_form form %}
             {% csrf_token %}
-            <button type="submit" >Publier</button>
+            <button type="submit" class="btn btn-secondary" >Publier</button>
 
             {# En cas d'annulation, on revient à la page principale #}
         <tbody>
-            <input type="button" onclick= window.location.href="{% url 'itineraires:modif_sortie' sortie.id%}" value="Annuler" style="float: left">
+            <input type="button" class="btn btn-secondary" onclick= window.location.href="{% url 'itineraires:modif_sortie' sortie.id%}" value="Annuler" >
         </tbody>
         </form>
     {%else%}

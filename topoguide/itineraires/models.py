@@ -36,7 +36,7 @@ class Itineraire(models.Model):
     
 class Sortie(models.Model):
     """
-    Une sortie constitué de l'utilisateur qui a enregistré la sortie, de l'itinéraire correspondant dans le topoguide, de la date de la sortie
+    Une sortie constituée de l'utilisateur qui a enregistré la sortie, de l'itinéraire correspondant dans le topoguide, de la date de la sortie
     de la durée réelle (en heures), du nombre de personnes ayant participé à la sortie, de l'expérience du groupe (à choisir dans une liste tous débutants, tous expérimentés, mixte)
     de la météo (à choisir dans une liste bonne, moyenne, mauvaise) et de la difficulté ressentie (de 1 à 5)
     """
