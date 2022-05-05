@@ -2,7 +2,7 @@ from django.db import models
 from django.db.models import IntegerField, Model
 from django.contrib.auth.models import User
 import datetime
-from django.core.validators import MinValueValidator 
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 # Create your models here.
@@ -25,7 +25,7 @@ class Itineraire(models.Model):
     altitude_maximale = models.PositiveIntegerField('Altitude maximale (m)')
     denivele_positif_cumule = models.PositiveIntegerField('Dénivelé positif cumulé (m)')
     denivele_negatif_cumule = models.PositiveIntegerField('Dénivelé négatif cumulé (m)')
-    duree = models.PositiveIntegerField('Durée (en heure)',validators=[MinValueValidator(0)])
+    duree = models.PositiveIntegerField('Durée (en heure)',validators=[MinValueValidator(1)])
     CHOIX_DIF = ((1,'1'),(2,'2'),(3,'3'), (4,'4'), (5,'5')) # Liste d'entier avec choix pour difficulté
     difficulte = models.IntegerField('Difficulté (de 1 à 5)', default=1,choices=CHOIX_DIF)
 
@@ -42,10 +42,10 @@ class Sortie(models.Model):
     """
     utilisateur = models.ForeignKey(User, on_delete=models.CASCADE) #Référence à enregistrements d'autres tables avec le type ForeignKey
     itineraire = models.ForeignKey(Itineraire, on_delete=models.CASCADE)
-    date_sortie = models.DateField('Date de la sortie')
-    duree_reelle = models.IntegerField('Durée réelle (en heure)')
+    date_sortie = models.DateField('Date de la sortie',validators=[MaxValueValidator(limit_value=datetime.date.today)])
+    duree_reelle = models.IntegerField('Durée réelle (en heure)',validators=[MinValueValidator(1)])
     CHOIX_EXP = (('Tous débutants','Tous débutants'),('Tous expérimentés','Tous expérimentés'),('Mixte','Mixte')) # Liste de caractères avec choix pour expérience
-    nombre_personne = models.FloatField('Nombre de personnes ayant réalisé la sortie')
+    nombre_personne = models.IntegerField('Nombre de personnes ayant réalisé la sortie', validators=[MinValueValidator(1)])
     experience = models.CharField('Expérience du groupe', max_length= 20,choices=CHOIX_EXP)
     CHOIX_METEO = (('Bonne','Bonne'),('Moyenne','Moyenne'),('Mauvaise','Mauvaise'))
     meteo = models.CharField('Météo', max_length= 20,choices=CHOIX_METEO)
