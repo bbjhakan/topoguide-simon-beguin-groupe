@@ -146,7 +146,7 @@
                           
                           <td><button type="button" class="btn btn-secondary" style="float:center" onclick= window.location.href="{% url 'itineraires:sortie_details' sortie.id %}">Consulter</button></td>
                           <!-- N'affiche le bouton modifier que si l'utilisateur est l'auteur de la sortie -->
-                          {%if utilisateur == sortie.utilisateur%} 
+                          {%if sortie.utilisateur == request.user %} 
                           <td><button type="button" class="btn btn-secondary" style="float:center" onclick= window.location.href="{% url 'itineraires:modif_sortie' sortie.id %}">Modifier</button></td>
                           {%endif%}
                       </tr>
