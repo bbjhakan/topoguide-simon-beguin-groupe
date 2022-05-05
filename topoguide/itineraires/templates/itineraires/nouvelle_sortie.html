@@ -32,14 +32,14 @@
         <!-- Formulaire de création d'une sortie-->
         <form method="POST" action = "" class="post-form">{% csrf_token %}
             <div class="mb-3">
-            {{ form.as_p }}
-            <button type="submit" class="button">Enregistrer</button>
+            {% bootstrap_form form %}
+            <button type="submit" class="btn btn-secondary">Enregistrer</button>
         </div>
 
 
 
 
         {# Bouton de retour en cas d'annulation #}
-        <input type="button" onclick= window.location.href="{% url 'itineraires:sorties' itineraire.id %}" value="Annuler" style="float: left">
+        <input type="button" class="btn btn-secondary" onclick= window.location.href="{% url 'itineraires:sorties' itineraire.id %}" value="Annuler" style="float: left">
 {% endblock %}
 
