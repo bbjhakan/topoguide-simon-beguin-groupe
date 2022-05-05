@@ -30,11 +30,11 @@ def sorties(request, itineraire_id):
     """
     sortie_query = Sortie.objects.filter(itineraire_id = itineraire_id)
 
-    date_min = request.GET.get('date_min')
-    date_max = request.GET.get('date_max')
-    difficulte = request.GET.get('difficulte')
-    duree_min = request.GET.get('duree_min')
-    duree_max = request.GET.get('duree_max')
+    date_min = request.GET.get('date_min')##récupère le champ à l'intérieur du filtre correspondant à la date minimale souhaitée
+    date_max = request.GET.get('date_max') ##récupère le champ à l'intérieur du filtre correspondant à la date maximale souhaitée
+    difficulte = request.GET.get('difficulte')##récupère le champ à l'intérieur du filtre correspondant à la difficulté souhaitée
+    duree_min = request.GET.get('duree_min')##récupère le champ à l'intérieur du filtre correspondant à la durée minimale souhaitée
+    duree_max = request.GET.get('duree_max')##récupère le champ à l'intérieur du filtre correspondant à la durée maximale souhaitée
     itineraire = get_object_or_404(Itineraire, pk = itineraire_id)
     utilisateur = request.user
     
