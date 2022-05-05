@@ -85,9 +85,11 @@
 
 
 <!-- Affichage des différentes sorties -->
-<div class="row pb-3">
-    <h1>Sorties </h1>
+<div>
+    <h1>Sorties </h1>  <a class="btn btn-secondary" href="{% url 'itineraires:nouvelle_sortie' itineraire.id%}">Créer une nouvelle sortie</a>
 </div>
+<br>
+
 <div class="pos-f-t">
     <div class="collapse" id="navbarToggleExternalContent">
       <form method="GET" action="{%url 'itineraires:sorties' itineraire.id%}">        
@@ -201,10 +203,6 @@
 <!-- Ajout de 2 boutons pour créer une sortie ou revenir à la page des itinéraires-->
 <div class="row pt-3">
     <a class="btn btn-secondary" href="{% url 'itineraires:itineraires' %}">Retour aux itinéraires</a>
-</div>
-
-<div class="row pt-3">
-    <a class="btn btn-secondary" href="{% url 'itineraires:nouvelle_sortie' itineraire.id%}">Créer une nouvelle sortie</a>
 </div>
 
 

@@ -7,30 +7,42 @@
 {% block content %}
 
 <!-- Entête de la page de sortie avec un lien cliquable sur l'itinéraire pour revenir à la page des itinéraires ainsi que le nom du randonneur et info sur l'itineraire-->
-<div class="row pb-3">
+<div class="row">
     <h1><a href="{% url 'itineraires:sorties' sortie.itineraire.id %}">{{ sortie.itineraire }}</a><small> -- Sortie de {{ sortie.utilisateur }}</small></h1>
     <br><br>
-    <div class="container">
-    <tr>
+    <div class="col">
+    
         <h2> Itinéraire: </h2>
-        <td><b>Altitude de départ</b> : {{sortie.itineraire.altitude_depart}} mètres</td>
+        <b>Altitude de départ</b> : {{sortie.itineraire.altitude_depart}} mètres
         <br>
-        <td><b>Altitude minimale</b> : {{sortie.itineraire.altitude_minimale}} mètres</td>
+        <b>Altitude minimale</b> : {{sortie.itineraire.altitude_minimale}} mètres
         <br>
-        <td><b>Altitude maximale</b> : {{sortie.itineraire.altitude_maximale}} mètres</td>
+        <td><b>Altitude maximale</b> : {{sortie.itineraire.altitude_maximale}} mètres
         <br>
-        <td><b>Dénivelé positif cumulé</b> : {{sortie.itineraire.denivele_positif_cumule}} mètres </td>
+        <b>Dénivelé positif cumulé</b> : {{sortie.itineraire.denivele_positif_cumule}} mètres 
         <br>
-        <td><b>Dénivelé négatif cumulé</b> : {{sortie.itineraire.denivele_negatif_cumule}} mètres </td>
+        <b>Dénivelé négatif cumulé</b> : {{sortie.itineraire.denivele_negatif_cumule}} mètres 
         <br>
-        <td><b>Durée estimée</b> : {{sortie.itineraire.duree}} heures</td>
+        <b>Durée estimée</b> : {{sortie.itineraire.duree}} heures
         <br>
-        <td><b>Difficulté</b> : {{sortie.itineraire.difficulte}}/5</td>
-    </tr>
+        <td><b>Difficulté</b> : {{sortie.itineraire.difficulte}}/5
+
+            <article class="sortie">
+                <aside class="actions">
+                    <!-- Ajout d'un icône pour éditer une sortie -->
+                    <!-- N'affiche le bouton modifier que si l'utilisateur est l'auteur de la sortie -->
+                    {%if utilisateur == sortie.utilisateur%} 
+                    <a class="btn btn-default" href="{% url 'itineraires:modif_sortie' sortie.id %}">
+                        {% include './icones/pencil-fill.svg' %} Éditer sortie
+                    </a>
+                    {%endif%}
+                </aside>
+            </article>
+    
+    
     </div>
 
-</div>
-
+            <div class="col">
             <h2> Détails sur la sortie </h2>
             <tr>
                          <td>
@@ -47,19 +59,9 @@
                     <td><b>Difficulté ressentie :</b> {{ sortie.difficulte_ressentie }}</td>
                         </td>
                     </tr>
-
+            </div>
+ </div>
         
-        <article class="sortie">
-            <aside class="actions">
-                <!-- Ajout d'un icône pour éditer une sortie -->
-                <!-- N'affiche le bouton modifier que si l'utilisateur est l'auteur de la sortie -->
-                {%if utilisateur == sortie.utilisateur%} 
-                <a class="btn btn-default" href="{% url 'itineraires:modif_sortie' sortie.id %}">
-                    {% include './icones/pencil-fill.svg' %} Éditer sortie
-                </a>
-                {%endif%}
-            </aside>
-        </article>
 
 
 
