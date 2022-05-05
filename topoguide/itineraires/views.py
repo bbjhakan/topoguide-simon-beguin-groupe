@@ -234,6 +234,6 @@ def photo_upload(request, sortie_id):
     else:
        form = PhotoForm()
         
-    return render(request, 'itineraires/photo_upload.html', {'form' : form})
+    return render(request, 'itineraires/photo_upload.html', {'form' : form, 'sortie': sortie})
 
 

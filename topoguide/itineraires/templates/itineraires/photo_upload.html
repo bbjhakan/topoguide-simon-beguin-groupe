@@ -1,12 +1,21 @@
 {% extends 'base.html' %}
 {% block content %}
+    {% if sortie.utilisateur == request.user %}
+        <h2>Télécharger une photo</h2>
+        <form method="post" enctype="multipart/form-data">
 
-    <h2>Télécharger une photo</h2>
-    <form method="post" enctype="multipart/form-data">
+            {# Création du formulaire pour uploader une photo #}
+            {{ form.as_p }}
+            {% csrf_token %}
+            <button type="submit" >Publier</button>
 
-        {# Création du formulaire pour uploader une photo #}
-        {{ form.as_p }}
-        {% csrf_token %}
-        <button type="submit" >Publier</button>
-    </form>
+            {# En cas d'annulation, on revient à la page principale #}
+        <tbody>
+            <input type="button" onclick= window.location.href="{% url 'itineraires:modif_sortie' sortie.id%}" value="Annuler" style="float: left">
+        </tbody>
+        </form>
+    {%else%}
+    <p> Vous n'êtes pas l'auteur de cette sortie et ne pouvez donc pas la modifier !</p>
+    <a href="{% url 'itineraires:sortie_details' sortie.id %}"> Retour sur la page de détail de la sortie </a>
+    {%endif%}
 {% endblock content %}
