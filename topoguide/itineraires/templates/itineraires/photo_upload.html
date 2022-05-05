@@ -3,7 +3,6 @@
     {% if sortie.utilisateur == request.user %}
         <h2>Télécharger une photo</h2>
         <form method="post" enctype="multipart/form-data">
-
             {# Création du formulaire pour uploader une photo #}
             {{ form.as_p }}
             {% csrf_token %}

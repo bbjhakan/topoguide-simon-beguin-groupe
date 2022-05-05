@@ -8,7 +8,7 @@
         <form method="POST" action = "" class="post-form">
         {% csrf_token %}
 
-        {{form}}
+        {% bootstrap_form form %}
 
         {# Bouton d'envoi du message #}
         <input type = "submit"></button>
