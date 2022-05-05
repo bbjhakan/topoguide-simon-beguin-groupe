@@ -36,7 +36,7 @@
                         {% include './icones/pencil-fill.svg' %} Éditer sortie
                     </a>
                     <!-- Bouton d'enregistrement d'une photo -->
-                    <input type="button" onclick= window.location.href="{% url 'itineraires:photo_upload' sortie.id %}"  class="btn btn-secondary" value="Telecharger des photos" style="float: left">
+                        <input type="button" onclick= window.location.href="{% url 'itineraires:photo_upload' sortie.id %}"  class="btn btn-secondary" value="Telecharger des photos" style="float: left">
                     {%endif%}
                 </aside>
             </article>
