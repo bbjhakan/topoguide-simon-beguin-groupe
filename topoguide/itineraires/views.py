@@ -1,13 +1,13 @@
-from django.shortcuts import get_list_or_404, get_object_or_404, render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q, Count
+from django.db.models import Q
 from django.utils import timezone
 from .forms import SortieForm, CommentForm, PhotoForm
 from .models import Itineraire, Sortie, Commentaire, Photo
 
 # Create your views here.
 
-@login_required
+
 def itineraires(request):
     """
     Prends les itinéraires créés et les affiches
@@ -19,7 +19,6 @@ def itineraires(request):
     return render(request, 'itineraires/itineraires.html', {'itineraires': itineraires})
 
 
-@login_required
 def sorties(request, itineraire_id):
     """
     Prends les sorties créés  et les affiches
@@ -29,13 +28,13 @@ def sorties(request, itineraire_id):
         itineraire_id : l'identifiant de l'itineraire 
 
     """
-    sortie_query = Sortie.objects.all()
+    sortie_query = Sortie.objects.filter(itineraire_id = itineraire_id)
 
-    date_min = request.GET.get('date_min')
-    date_max = request.GET.get('date_max')
-    difficulte = request.GET.get('difficulte')
-    duree_min = request.GET.get('duree_min')
-    duree_max = request.GET.get('duree_max')
+    date_min = request.GET.get('date_min')##récupère le champ à l'intérieur du filtre correspondant à la date minimale souhaitée
+    date_max = request.GET.get('date_max') ##récupère le champ à l'intérieur du filtre correspondant à la date maximale souhaitée
+    difficulte = request.GET.get('difficulte')##récupère le champ à l'intérieur du filtre correspondant à la difficulté souhaitée
+    duree_min = request.GET.get('duree_min')##récupère le champ à l'intérieur du filtre correspondant à la durée minimale souhaitée
+    duree_max = request.GET.get('duree_max')##récupère le champ à l'intérieur du filtre correspondant à la durée maximale souhaitée
     itineraire = get_object_or_404(Itineraire, pk = itineraire_id)
     utilisateur = request.user
     
@@ -54,7 +53,6 @@ def sorties(request, itineraire_id):
     return render(request, 'itineraires/sorties.html', {'itineraire': itineraire, 'utilisateur':utilisateur, 'qs': sortie_query, 'date_min': date_min, 'date_max': date_max, 'difficulte': difficulte,'duree_min': duree_min, 'duree_max': duree_max})
 
 
-@login_required
 def sortie(request, sortie_id):
     """
     Prend une sortie et affiche les détails
@@ -64,7 +62,7 @@ def sortie(request, sortie_id):
         itineraire_id : l'identifiant de la sortie
     """
     sortie = Sortie.objects.get(pk=sortie_id)    
-    liste_commentaires = Commentaire.objects.filter(pk = sortie_id)
+    liste_commentaires = Commentaire.objects.filter(sortie_id = sortie_id)
     photos = Photo.objects.filter(sortie = sortie_id)
     utilisateur = request.user
     
@@ -84,18 +82,20 @@ def nouvelle_sortie(request, itineraire_id):
           avec des mauvaises donnée,
         - ou une page avec la sortie ajouté
     """
+    s = 0
     if request.method == 'GET':
         form = SortieForm()
     elif request.method == 'POST':
         form = SortieForm(request.POST)
         if form.is_valid():
             sortie = form.save(commit=False)
+            s = sortie
             sortie.utilisateur = request.user
             sortie.itineraire = get_object_or_404(Itineraire, pk=itineraire_id) #pré-rempli l'itinéraire
             sortie.save()
             return redirect('itineraires:sortie_details', sortie.id)
     itineraire = get_object_or_404(Itineraire, pk=itineraire_id )
-    return render(request, 'itineraires/modif_sortie.html', {'form': form, 'itineraire': itineraire})
+    return render(request, 'itineraires/nouvelle_sortie.html', {'form': form, 'itineraire': itineraire, 'sortie': s})
 
 
 @login_required
@@ -209,7 +209,7 @@ def ajout_commentaire(request, sortie_id):
     else:
       form = CommentForm()
 
-    return render(request, 'itineraires/commentaire.html', {'form': form})
+    return render(request, 'itineraires/commentaire.html', {'form': form, 'sortie_id': sortie_id})
 
 @login_required
 def photo_upload(request, sortie_id):

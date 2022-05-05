@@ -59,23 +59,28 @@
     <ul>
         <li><b class="active" href="#home">TOPOGUIDE</b></li>
         <li><a href="/itineraires/">Itineraires</a></li>
-        <li style="float:right"><a href="/accounts/logout/">Logout</a></li>
-        <li class = "mx-auto">
+        {% if user.is_authenticated %}
+        <li style="float:right; padding-left : 13%"><a href="{% url 'logout'%}?next={{request.path}}">Se déconnecter</a></li>
+        {% else %}
+        <li style="float:right; padding-left: 13%"><a href="{% url 'login'%}?next={{request.path}}">Se connecter</a></li>
+        {% endif %}
+        <li class = "mx-auto" style="float:right">
           <!-- Ajout d'une barre de recherche dans la barre de navigation -->
             <form method="GET" action="{% url 'itineraires:recherche' %}">
-          <div class="form-row">
-              <div class="form-group col-12">
-                  <div class="input-group">
-                      <input class="form-control py-2 border-right-0 border" type="search" name="barre_recherche" placeholder="Recherche.." value = {{recherche}}>
-                      <span class="input-group-append">
-                          <div class="input-group-text">
-                              <i class="fa fa-search"></i>
-                          </div>
-                      </span>
-                  </div>
-              </div>        
-          </div>
-        </form> </li>
+              <div class="form-row mx-auto">
+                  <div class="form-group col-12">
+                      <div class="input-group">
+                          <input class="form-control py-2 border-right-0 border" type="search" name="barre_recherche" placeholder="Recherche.." value = {{recherche}}>
+                          <span class="input-group-append">
+                              <div class="input-group-text">
+                                  <i class="fa fa-search"></i>
+                              </div>
+                          </span>
+                      </div>
+                  </div>        
+              </div>
+            </form> 
+        </li>
     </ul>
       <div class="container">
         {% block content %}{% endblock %}

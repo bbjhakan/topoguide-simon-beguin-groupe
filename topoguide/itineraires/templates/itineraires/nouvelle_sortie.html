@@ -2,10 +2,9 @@
 {% load bootstrap5 %} 
 
 {% block content %}
-    {% if sortie.utilisateur == request.user %}
         <!-- Information sur l'itinéraire en entête-->
         <div class="row pb-3">
-            <h1>Editer sortie pour {{itineraire.titre}}</h1>
+            <h1>Nouvelle sortie pour {{itineraire.titre}}</h1>
             {{itineraire.description}} depuis {{itineraire.point_depart}}
             <br><br>
             <div class="container">
@@ -34,25 +33,13 @@
         <form method="POST" action = "" class="post-form">{% csrf_token %}
             <div class="mb-3">
             {{ form.as_p }}
-            
+            <button type="submit" class="button">Enregistrer</button>
         </div>
 
 
-        
 
-        <!-- Bouton d'enregistrement d'une photo -->
-            <input type="button" onclick= window.location.href="{% url 'itineraires:photo_upload' sortie.id %}"  value="Telecharger des photos" style="float: left">
-
-            <br>
-            <br>
-            <button type="submit" class="button">Enregistrer</button>
-        </form>
 
         {# Bouton de retour en cas d'annulation #}
-        <input type="button" onclick= window.location.href="{% url 'itineraires:sortie_details' sortie.id %}" value="Annuler" style="float: left">
-    {% else %} 
-    <p> Vous n'êtes pas l'auteur de cette sortie, et ne pouvez donc pas la modifier !</p>
-    <a href="{% url 'itineraires:sortie_details' sortie.id %}"> Retour sur la page de détail de la sortie </a>
-    {%endif%}
+        <input type="button" onclick= window.location.href="{% url 'itineraires:sorties' itineraire.id %}" value="Annuler" style="float: left">
 {% endblock %}
 
