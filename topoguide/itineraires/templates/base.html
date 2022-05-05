@@ -26,27 +26,12 @@
     <title>{% block title %}TOPOGUIDE{% endblock %}</title>
 </head>
     <!-- Style CSS-->
-     <!-- Utilisation petit trick pour mettre une image en arrère plan et modfier son opacité sans modifier celle du texte-->
+     <!-- Image en arrère plan déjà pastélisée-->
     <style>
 
       body {
         background: url("{% static 'images/fond.jpg' %}") repeat ;
-        height : 100vh;
-        }
-
-        body::after {
-          content: "";
-          background: white;
-          opacity: 0.4;
-          background-attachment:scroll;
-          top: 0;
-          left: 0;
-          bottom: 0;
-          right: 0;
-          position: absolute;
-          z-index: -1;    
-        
-    
+        height : 100vh;    
         }
 
     </style>
