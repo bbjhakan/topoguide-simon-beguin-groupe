@@ -11,12 +11,12 @@
         {% bootstrap_form form %}
 
         {# Bouton d'envoi du message #}
-        <input type = "submit"></button>
+        <input type = "submit" class="btn btn-secondary"></button>
     </form>
     
     {# En cas d'annulation, on revient à la page principale #}
     <tbody>
-        <input type="button" onclick= window.location.href="{% url 'itineraires:sortie_details' sortie_id%}" value="Annuler" style="float: left">
+        <input type="button" class="btn btn-secondary" onclick= window.location.href="{% url 'itineraires:sortie_details' sortie_id%}" value="Annuler" style="float: left">
     </tbody>
     
     
