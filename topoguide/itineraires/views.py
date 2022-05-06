@@ -41,7 +41,7 @@ def sorties(request, itineraire_id):
     if is_valid_query(date_min):
         sortie_query = sortie_query.filter(date_sortie__gte=date_min)                                       
     if is_valid_query(date_max):
-        sortie_query = sortie_query.filter(date_sortie__lt=date_max)                                       
+        sortie_query = sortie_query.filter(date_sortie__lte=date_max)                                       
     
     if is_valid_query(difficulte):
         sortie_query = sortie_query.filter(difficulte_ressentie = difficulte)
@@ -158,8 +158,12 @@ def SearchView(request):
     difficulte = request.GET.get('difficulte') ##récupère le champ à l'intérieur du filtre correspondant à la difficulté souhaitée
     duree_min = request.GET.get('duree_min') ##récupère le champ à l'intérieur du filtre correspondant à la durée minimale souhaitée
     duree_max = request.GET.get('duree_max') ##récupère le champ à l'intérieur du filtre correspondant à la durée maximale souhaitée
-    
-    
+    date_min = request.GET.get('date_min')##récupère le champ à l'intérieur du filtre correspondant à la date minimale souhaitée
+    date_max = request.GET.get('date_max') ##récupère le champ à l'intérieur du filtre correspondant à la date maximale souhaitée
+    if is_valid_query(date_min):
+        sortie_query = sortie_query.filter(date_sortie__gte=date_min)                                       
+    if is_valid_query(date_max):
+        sortie_query = sortie_query.filter(date_sortie__lte=date_max)
     if is_valid_query(query):
         itineraire_query = itineraire_query.filter(Q(titre__icontains = query)  | ##on cherche dans le titre de l'itinéraire
                                                    Q(description__icontains = query) | ## ou dans la description de l'itinéraire
@@ -181,7 +185,7 @@ def SearchView(request):
         sortie_query = sortie_query.filter(duree_reelle__lte=duree_max)   ##vérifie que la durée réelle de la sortie est inférieure ou égale à la durée précisée
     itineraire_query = itineraire_query.order_by('titre')
     sortie_query = sortie_query.order_by('-date_sortie')
-    return render(request, "itineraires/search_form.html", {'recherche': query, 'qs': sortie_query, 'qi': itineraire_query, 'difficulte': difficulte,'duree_min': duree_min, 'duree_max': duree_max})
+    return render(request, "itineraires/search_form.html", {'recherche': query, 'qs': sortie_query, 'qi': itineraire_query, 'date_min': date_min, 'date_max': date_max, 'difficulte': difficulte,'duree_min': duree_min, 'duree_max': duree_max})
     
 
 @login_required

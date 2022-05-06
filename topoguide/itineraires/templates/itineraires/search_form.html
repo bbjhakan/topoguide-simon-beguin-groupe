@@ -28,7 +28,19 @@
                 <input type="text" name = "barre_recherche" value = {{recherche}} >
               </div>
             </div>
-  
+            <div class="form-row">
+              <div class="form-group col-md-2 col-lg-2">
+                <!-- Filtre pour afficher seulement les sorties après la date indiquée-->
+                <label for="dateMin">Date de sortie après le</label>
+                <input type="date" class="form-control" id="dateMin" name="date_min" value="{{date_min}}">
+              </div>
+              
+                <div class="form-group col-md-2 col-lg-2">
+                  <!-- Filtre pour afficher seulement les sorties avant la date indiquée-->
+                  <label for="dateMax">Date de sortie avant le</label>
+                  <input type="date" class="form-control" id="dateMax" name="date_max" value="{{date_max}}" >
+                </div>
+              </div>
               <div class="form-row">
                 <div class="form-group col-md-2 col-lg-2">
                   <!-- Filtre pour afficher seulement les itinéraires/sorties avec la difficulté indiquée-->
@@ -65,7 +77,13 @@
       <br/>
       <!-- Permet d'afficher les filtres qui sont appliqués -->
       <div> Liste de filtre(s) appliqué(s): <br/>
-        {% if  duree_max or duree_min or difficulte%}
+        {% if date_min or date_max or duree_max or duree_min or difficulte%}
+      {% if date_min %}
+        Date de sortie après le : {{date_min}}<br/>
+      {%endif%}
+      {% if date_max %}
+        Date de sortie avant le : {{date_max}}<br/>
+        {%endif%}
           {% if duree_min %}
             Durée minimale : {{duree_min}} h<br/>
           {%endif%}
@@ -123,8 +141,6 @@
                       <th>Difficulté ressentie</th>
                       <th></th>
                       <th>Durée réelle</th>
-                      <th> </th>
-                      <th> </th>
                   </tr>
                   </thead>
                   <tbody>
