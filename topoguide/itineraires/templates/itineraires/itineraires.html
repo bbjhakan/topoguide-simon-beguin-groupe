@@ -19,6 +19,7 @@
                 <th>Nom</th>
                 <th>Durée estimée</th>
                 <th>Difficulté estimée</th>
+                <th>Description</th>
             </tr>
             </thead>
             <tbody>
@@ -28,6 +29,7 @@
                     <td><a href="{% url 'itineraires:sorties' itineraire.id %}">{{ itineraire.titre }}</a></td>
                     <td>{{ itineraire.duree }} h </td>
                     <td>{{ itineraire.difficulte }}/5</td>
+                    <td>{{ itineraire.description }}</td>
                 </tr>
             {% endfor %}
             </tbody>
